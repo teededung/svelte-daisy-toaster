@@ -13,13 +13,14 @@ export class ToastState {
 		});
 	}
 
-	add({ type = 'info', message = '', durationMs = 5000, position = 'toast-top toast-end' } = {}) {
+	add({ type = 'info', message = '', durationMs = 5000, position = 'toast-top toast-end', style } = {}) {
 		const id = crypto.randomUUID();
 		this.toasts.push({
 			id,
 			type,
 			message,
-			position
+			position,
+			style
 		});
 
 		this.toastToTimeoutMap.set(
@@ -72,5 +73,5 @@ export function toast(options) {
 
 // đường tắt: toast.success('...'), v.v.
 ['info', 'success', 'warning', 'error'].forEach(t => {
-  toast[t] = (msg, d, pos) => toast({ type: t, message: msg, durationMs: d, position: pos });
+  toast[t] = (msg, d, pos, s) => toast({ type: t, message: msg, durationMs: d, position: pos, style: s });
 }); 

@@ -124,13 +124,14 @@ Anywhere in your components:
   - `type`: 'info' | 'success' | 'warning' | 'error' (default: 'info')
   - `message`: string (default: '')
   - `durationMs`: number in ms (default: 5000)
+  - `style`: 'alert-outline' | 'alert-dash' | 'alert-soft' (optional)
   - `position`: string of toast classes, e.g. 'toast-bottom toast-start' (default: 'toast-top toast-end')
 
-Shortcuts:
-- `toast.info(message, durationMs, position)`
-- `toast.success(message, durationMs, position)`
-- `toast.warning(message, durationMs, position)`
-- `toast.error(message, durationMs, position)`
+Shortcuts (signature):
+- `toast.info(message, durationMs?, position?, style?)`
+- `toast.success(message, durationMs?, position?, style?)`
+- `toast.warning(message, durationMs?, position?, style?)`
+- `toast.error(message, durationMs?, position?, style?)`
 
 ### Components
 - `<Toaster />`: Renders all toasts (place once in app)
@@ -148,9 +149,9 @@ Success toast at bottom-center:
 toast.success('Saved!', 3000, 'toast-bottom toast-center');
 ```
 
-Error with custom duration:
+Error toast with dashed border style:
 ```svelte
-toast.error('Something went wrong', 10000);
+toast.error('Something went wrong', 5000, undefined, 'alert-dash');
 ```
 
 Custom toast with options object:
@@ -158,6 +159,7 @@ Custom toast with options object:
 toast({
   type: 'success',
   message: 'Item screenshot copied to clipboard!',
+  style: 'alert-soft',
   durationMs: 3000,
   position: 'toast-bottom toast-center'
 });

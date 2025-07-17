@@ -1,12 +1,15 @@
 {
   "name": "svelte-daisy-toaster",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Svelte DaisyUI Toast Component",
   "keywords": [
     "daisyui",
     "tailwind",
+    "tailwind-4",
     "tailwindcss",
-    "svelte"
+    "svelte",
+    "svelte-5",
+    "toast"
   ],
   "scripts": {
     "dev": "vite dev",
