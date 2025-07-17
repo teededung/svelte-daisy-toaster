@@ -18,7 +18,11 @@
 </script>
 
 <button
-	class={`alert alert-${toast.type} cursor-pointer flex items-center gap-2`}
+	class="alert cursor-pointer flex items-center gap-2"
+	class:alert-info={toast.type === 'info'}
+	class:alert-success={toast.type === 'success'}
+	class:alert-warning={toast.type === 'warning'}
+	class:alert-error={toast.type === 'error'}
 	{onclick}
 	out:fly={{ x: 100, duration: 300 }}
 	type="button"
