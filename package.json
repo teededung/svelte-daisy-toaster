@@ -31,7 +31,9 @@
     "!dist/**/*.spec.*"
   ],
   "peerDependencies": {
-    "svelte": "^5.36.2"
+    "svelte": "^5.36.2",
+    "tailwindcss": "^4.1.0",
+    "daisyui": "^5.0.46"
   },
   "exports": {
     ".": {

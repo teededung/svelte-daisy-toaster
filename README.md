@@ -15,6 +15,63 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 - DaisyUI ^5.0.0 or later (for styling)
 - Tailwind CSS ^4.0.0 or later
 
+## Peer Dependencies
+
+`svelte-daisy-toaster` ships without any CSS bundled. The host project **must** have TailwindCSS (v4 or later) and DaisyUI installed. Add them as dev-dependencies:
+
+```bash
+yarn add -D tailwindcss@^4.1 daisyui@^5
+```
+
+---
+
+## Tailwind + DaisyUI setup (in _your project_)
+
+Below are two ways to configure Tailwind **v4** so that it recognises the classes used by this library. Pick whichever fits your workflow.
+
+### 1. CSS-first (recommended)
+
+Create (or open) the stylesheet that Tailwind will compile, e.g. `src/app.css`, and add:
+
+```css
+/* src/app.css */
+@import "tailwindcss";
+@plugin "daisyui";              /* Load DaisyUI plugin */
+
+/* Tell Tailwind to scan toaster components for classes */
+@source "../node_modules/svelte-daisy-toaster/dist";
+```
+
+No JavaScript config file is needed with this approach.
+
+### 2. Keep a JavaScript config file
+
+If you prefer the classic `tailwind.config.js` file, note that Tailwind v4 no longer detects it automatically. You **must** load it explicitly via `@config` before importing Tailwind:
+
+```css
+/* src/app.css */
+@config "../tailwind.config.js"; /* path is relative to this CSS file */
+@import "tailwindcss";
+@plugin "daisyui";
+```
+
+`tailwind.config.js` example:
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./src/**/*.{html,js,svelte,ts}",
+    "./node_modules/svelte-daisy-toaster/dist/**/*.{js,svelte}"
+  ],
+  plugins: [require('daisyui')],
+};
+```
+
+Start the dev server (`yarn dev`). After the first build, the DaisyUI `alert` utilities used by `svelte-daisy-toaster` will have full styling.
+
+---
+
 ## Installation
 
 If publishing to npm:
