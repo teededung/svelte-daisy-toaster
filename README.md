@@ -125,7 +125,7 @@ Anywhere in your components:
   - `message`: string (default: '')
   - `durationMs`: number in ms (default: 5000)
   - `style`: 'outline' | 'dash' | 'soft' (optional)
-  - `position`: string of toast classes, e.g. 'toast-bottom toast-start' (default: 'toast-top toast-end')
+  - `position`: shorthand like `bottom-center`, `top-right` **or** full DaisyUI classes (`toast-bottom toast-center`). Default is `top-right`.
 
 Shortcuts (signature):
 - `toast.info(message, durationMs?, position?, style?)`
@@ -149,9 +149,9 @@ Success toast at bottom-center:
 toast.success('Saved!', 3000, 'toast-bottom toast-center');
 ```
 
-Error toast with dashed border style:
+Error toast at bottom-center, dashed border style:
 ```svelte
-toast.error('Something went wrong', 5000, undefined, 'dash');
+toast.error('Something went wrong', 5000, 'bottom-center', 'dash');
 ```
 
 Custom toast with options object:

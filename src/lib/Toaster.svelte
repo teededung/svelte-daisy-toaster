@@ -6,9 +6,35 @@
 
 	const toastState = getToastState();
 
+	// Convert shorthand like "bottom-center" to DaisyUI classes
+	function resolvePosition(pos = 'top-right') {
+		// If already using DaisyUI toast-* classes, keep as is
+		if (pos.startsWith('toast-')) return pos;
+
+		const [vertical, horizontal] = pos.split('-');
+
+		const vertClass = vertical === 'bottom' ? 'toast-bottom' : 'toast-top';
+
+		let horizClass = 'toast-end';
+		switch (horizontal) {
+			case 'center':
+				horizClass = 'toast-center';
+				break;
+			case 'left':
+				horizClass = 'toast-start';
+				break;
+			case 'right':
+			default:
+				horizClass = 'toast-end';
+				break;
+		}
+
+		return `${vertClass} ${horizClass}`;
+	}
+
 	const groupedToasts = $derived(
 		toastState.toasts.reduce((groups, toast) => {
-			const pos = toast.position || 'toast-top toast-end';
+			const pos = resolvePosition(toast.position);
 			if (!groups[pos]) groups[pos] = [];
 			groups[pos].push(toast);
 			return groups;
