@@ -124,7 +124,7 @@ Anywhere in your components:
   - `type`: 'info' | 'success' | 'warning' | 'error' (default: 'info')
   - `message`: string (default: '')
   - `durationMs`: number in ms (default: 5000)
-  - `style`: 'alert-outline' | 'alert-dash' | 'alert-soft' (optional)
+  - `style`: 'outline' | 'dash' | 'soft' (optional)
   - `position`: string of toast classes, e.g. 'toast-bottom toast-start' (default: 'toast-top toast-end')
 
 Shortcuts (signature):
@@ -151,7 +151,7 @@ toast.success('Saved!', 3000, 'toast-bottom toast-center');
 
 Error toast with dashed border style:
 ```svelte
-toast.error('Something went wrong', 5000, undefined, 'alert-dash');
+toast.error('Something went wrong', 5000, undefined, 'dash');
 ```
 
 Custom toast with options object:
@@ -159,7 +159,7 @@ Custom toast with options object:
 toast({
   type: 'success',
   message: 'Item screenshot copied to clipboard!',
-  style: 'alert-soft',
+  style: 'soft',
   durationMs: 3000,
   position: 'toast-bottom toast-center'
 });

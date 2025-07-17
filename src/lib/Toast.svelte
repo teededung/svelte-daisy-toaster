@@ -23,9 +23,9 @@
 	class:alert-success={toast.type === 'success'}
 	class:alert-warning={toast.type === 'warning'}
 	class:alert-error={toast.type === 'error'}
-	class:alert-outline={toast.style === 'alert-outline'}
-	class:alert-dash={toast.style === 'alert-dash'}
-	class:alert-soft={toast.style === 'alert-soft'}
+	class:alert-outline={toast.style === 'outline'}
+	class:alert-dash={toast.style === 'dash'}
+	class:alert-soft={toast.style === 'soft'}
 	{onclick}
 	out:fly={{ x: 100, duration: 300 }}
 	type="button"
