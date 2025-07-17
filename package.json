@@ -1,6 +1,6 @@
 {
   "name": "svelte-daisy-toaster",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Svelte DaisyUI Toast Component",
   "keywords": [
     "daisyui",
@@ -15,7 +15,8 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "package": "svelte-package"
+    "package": "svelte-package",
+    "prepublishOnly": "yarn package"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^6.0.1",
@@ -34,9 +35,9 @@
     "!dist/**/*.spec.*"
   ],
   "peerDependencies": {
+    "daisyui": "^5.0.46",
     "svelte": "^5.36.2",
-    "tailwindcss": "^4.1.0",
-    "daisyui": "^5.0.46"
+    "tailwindcss": "^4.1.0"
   },
   "exports": {
     ".": {
