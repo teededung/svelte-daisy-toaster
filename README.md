@@ -6,6 +6,7 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 
 - Easy to use toast notifications
 - Supports info, success, warning, and error types
+- Optional title for structured alerts
 - Customizable duration
 - Animated icons and transitions
 - Built with Svelte 5 runes
@@ -133,8 +134,9 @@ Anywhere in your components:
 **Object format:**
 
 - `options`: object with:
-  - `type`: 'info' | 'success' | 'warning' | 'error' | 'default' (default: 'info')
+  - `type`: 'info' | 'success' | 'warning' | 'error' | 'default' (default: 'default')
   - `message`: string (default: '')
+  - `title`: string (optional) - when provided, creates a structured alert with title and message
   - `durationMs`: number in ms (default: 5000)
   - `style`: 'outline' | 'dash' | 'soft' (optional)
   - `position`: shorthand like `bottom-center`, `top-right` **or** full DaisyUI classes (`toast-bottom toast-center`). Default is `top-right`.
@@ -145,15 +147,15 @@ Anywhere in your components:
 
 Shortcuts (signature):
 
-- `toast.info(message, durationMs?, position?, style?)`
-- `toast.success(message, durationMs?, position?, style?)`
-- `toast.warning(message, durationMs?, position?, style?)`
-- `toast.error(message, durationMs?, position?, style?)`
+- `toast.info(message, durationMs?, position?, style?, title?)`
+- `toast.success(message, durationMs?, position?, style?, title?)`
+- `toast.warning(message, durationMs?, position?, style?, title?)`
+- `toast.error(message, durationMs?, position?, style?, title?)`
 
 ### Components
 
 - `<Toaster />`: Renders all toasts (place once in app)
-- `<Toast toast={{id, type, message}} isAnimate={true} />`: Individual toast (usually not needed directly). The `isAnimate` prop (default: true) controls whether the icon animation is enabled.
+- `<Toast toast={{id, type, message, title?}} isAnimate={true} />`: Individual toast (usually not needed directly). The `isAnimate` prop (default: true) controls whether the icon animation is enabled.
 
 ### State Management
 
@@ -167,6 +169,22 @@ Default style toast (no icon, just `alert` class):
 
 ```svelte
 toast('Simple notification message');
+```
+
+Toast with title (structured layout):
+
+```svelte
+toast({
+  title: 'New message!',
+  message: 'You have 1 unread message',
+  type: 'info'
+});
+```
+
+Success toast with title using shortcut:
+
+```svelte
+toast.success('Operation completed successfully', 3000, 'top-right', 'soft', 'Success!');
 ```
 
 Success toast at bottom-center:

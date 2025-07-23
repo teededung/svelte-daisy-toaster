@@ -13,7 +13,7 @@ export class ToastState {
 		});
 	}
 
-	add({ type = 'info', message = '', title, durationMs = 5000, position = 'top-right', style } = {}) {
+	add({ type = 'default', message = '', title, durationMs = 5000, position = 'top-right', style } = {}) {
 		const id = crypto.randomUUID();
 		this.toasts.push({
 			id,
