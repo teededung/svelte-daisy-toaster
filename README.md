@@ -141,7 +141,7 @@ Anywhere in your components:
 
 **String format (default style):**
 
-- `toast(message)`: Creates a simple toast with default styling (only `alert` class, no icon)
+- `toast(message)`: Creates a simple toast with default styling (only `alert` class, no color)
 
 Shortcuts (signature):
 
