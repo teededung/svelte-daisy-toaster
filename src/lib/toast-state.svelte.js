@@ -58,6 +58,11 @@ export function getToastState() {
 }
 
 export function toast(options) {
+  // Nếu options là string, chuyển thành object với style default
+  if (typeof options === 'string') {
+    options = { message: options, type: 'default' };
+  }
+  
   // ưu tiên lấy từ context – an toàn khi gọi trong component con
   let ts;
   try {
@@ -74,4 +79,4 @@ export function toast(options) {
 // đường tắt: toast.success('...'), v.v.
 ['info', 'success', 'warning', 'error'].forEach(t => {
   toast[t] = (msg, d, pos, s) => toast({ type: t, message: msg, durationMs: d, position: pos, style: s });
-}); 
+});

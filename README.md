@@ -3,6 +3,7 @@
 A simple toast notification library for Svelte 5 applications using DaisyUI styles.
 
 ## Features
+
 - Easy to use toast notifications
 - Supports info, success, warning, and error types
 - Customizable duration
@@ -11,6 +12,7 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 - Styled with DaisyUI and Tailwind CSS
 
 ## Requirements
+
 - Svelte ^5.0.0 (peer dependency)
 - DaisyUI ^5.0.0 or later (for styling)
 - Tailwind CSS ^4.0.0 or later
@@ -36,7 +38,7 @@ Create (or open) the stylesheet that Tailwind will compile, e.g. `src/app.css`, 
 ```css
 /* src/app.css */
 @import "tailwindcss";
-@plugin "daisyui";              /* Load DaisyUI plugin */
+@plugin "daisyui"; /* Load DaisyUI plugin */
 
 /* Tell Tailwind to scan toaster components for classes */
 @source "../node_modules/svelte-daisy-toaster/dist";
@@ -62,9 +64,9 @@ If you prefer the classic `tailwind.config.js` file, note that Tailwind v4 no lo
 export default {
   content: [
     "./src/**/*.{html,js,svelte,ts}",
-    "./node_modules/svelte-daisy-toaster/dist/**/*.{js,svelte}"
+    "./node_modules/svelte-daisy-toaster/dist/**/*.{js,svelte}",
   ],
-  plugins: [require('daisyui')],
+  plugins: [require("daisyui")],
 };
 ```
 
@@ -89,6 +91,7 @@ yarn add svelte-daisy-toaster
 ## Usage
 
 ### Setup
+
 In your root layout or app component:
 
 ```svelte
@@ -103,58 +106,83 @@ In your root layout or app component:
 ```
 
 ### Showing Toasts
+
 Anywhere in your components:
 
 ```svelte
 <script>
   import { toast } from 'svelte-daisy-toaster';
 
-  function showToast() {
+  function showSuccessToast() {
     toast.success('Operation successful!', 3000);
+  }
+
+  function showDefaultToast() {
+    toast('Simple notification');
   }
 </script>
 
-<button onclick={showToast}>Show Toast</button>
+<button onclick={showSuccessToast}>Show Success Toast</button>
+<button onclick={showDefaultToast}>Show Default Toast</button>
 ```
 
 ## API
 
-### toast(options)
+### toast(options) or toast(message)
+
+**Object format:**
+
 - `options`: object with:
-  - `type`: 'info' | 'success' | 'warning' | 'error' (default: 'info')
+  - `type`: 'info' | 'success' | 'warning' | 'error' | 'default' (default: 'info')
   - `message`: string (default: '')
   - `durationMs`: number in ms (default: 5000)
   - `style`: 'outline' | 'dash' | 'soft' (optional)
   - `position`: shorthand like `bottom-center`, `top-right` **or** full DaisyUI classes (`toast-bottom toast-center`). Default is `top-right`.
 
+**String format (default style):**
+
+- `toast(message)`: Creates a simple toast with default styling (only `alert` class, no icon)
+
 Shortcuts (signature):
+
 - `toast.info(message, durationMs?, position?, style?)`
 - `toast.success(message, durationMs?, position?, style?)`
 - `toast.warning(message, durationMs?, position?, style?)`
 - `toast.error(message, durationMs?, position?, style?)`
 
 ### Components
+
 - `<Toaster />`: Renders all toasts (place once in app)
 - `<Toast toast={{id, type, message}} isAnimate={true} />`: Individual toast (usually not needed directly). The `isAnimate` prop (default: true) controls whether the icon animation is enabled.
 
 ### State Management
+
 - `setToastState()`: Initialize toast state context
 - `getToastState()`: Get current toast state
 - `ToastState` class: For custom implementations
 
 ## Examples
 
+Default style toast (no icon, just `alert` class):
+
+```svelte
+toast('Simple notification message');
+```
+
 Success toast at bottom-center:
+
 ```svelte
 toast.success('Saved!', 3000, 'toast-bottom toast-center');
 ```
 
 Error toast at bottom-center, dashed border style:
+
 ```svelte
 toast.error('Something went wrong', 5000, 'bottom-center', 'dash');
 ```
 
 Custom toast with options object:
+
 ```svelte
 toast({
   type: 'success',
@@ -165,10 +193,23 @@ toast({
 });
 ```
 
+Default style with options object:
+
+```svelte
+toast({
+  type: 'default',
+  message: 'Clean notification without icon',
+  durationMs: 4000,
+  position: 'top-center'
+});
+```
+
 ## Customization
+
 The toasts use DaisyUI's `alert` classes. Customize via Tailwind config or override styles.
 
 Position: Default top-end. Modify in Toaster.svelte if needed.
 
 ## License
-MIT 
+
+MIT
