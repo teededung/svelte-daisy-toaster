@@ -165,7 +165,7 @@ Shortcuts (signature):
 
 ## Examples
 
-Default style toast (no icon, just `alert` class):
+Default style toast (default color, just `alert` class):
 
 ```svelte
 toast('Simple notification message');
@@ -216,7 +216,7 @@ Default style with options object:
 ```svelte
 toast({
   type: 'default',
-  message: 'Clean notification without icon',
+  message: 'Clean notification',
   durationMs: 4000,
   position: 'top-center'
 });
