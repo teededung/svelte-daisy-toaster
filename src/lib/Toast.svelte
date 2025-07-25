@@ -3,6 +3,7 @@
   import { fly } from "svelte/transition";
   let { toast, isAnimate = true, position = "top-right" } = $props();
   const toastState = getToastState();
+  let alertRef = $state(null);
   let isAnimated = $state(false);
   let visible = $state(toast.visible ?? true);
 
@@ -15,6 +16,13 @@
   // Watch for changes in toast.visible from the toast state
   $effect(() => {
     visible = toast.visible ?? true;
+  });
+
+  // Watch for changes in toast.visible from the toast state
+  $effect(() => {
+    if (alertRef) {
+      toastState.widths[toast.id] = alertRef.clientWidth;
+    }
   });
 
   // Close toast when clicked
@@ -57,6 +65,7 @@
 
 {#if visible}
   <div
+    bind:this={alertRef}
     in:fly={{ x: -exitAnimation.x, y: -exitAnimation.y, duration: 300 }}
     out:fly={exitAnimation}
     class="alert flex items-center gap-2 relative"

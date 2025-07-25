@@ -257,7 +257,7 @@
         text: "Confirm",
         class: "btn-warning",
         callback: () => {
-          toast.success("Transaction confirmed!", 3000);
+          toast.success("Transaction confirmed!", 2000);
         },
       },
     });
@@ -275,7 +275,7 @@
           message: `This toast uses ${style} style with close button`,
           style: style,
           showCloseButton: true,
-          durationMs: 12000,
+          durationMs: 8000,
           position: "top-right",
         });
       }, index * 800);
@@ -289,7 +289,7 @@
       title: "Check out our repository!",
       message: "Visit our GitHub page for more information and updates",
       showCloseButton: true,
-      durationMs: 10000,
+      durationMs: 5000,
       button: {
         text: "Open GitHub",
         class: "btn-primary",

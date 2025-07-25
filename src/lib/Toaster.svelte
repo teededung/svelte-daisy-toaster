@@ -75,10 +75,19 @@
       return groups;
     }, {})
   );
+  const maxWidths = $derived(
+    Object.entries(groupedToasts).reduce((acc, [pos, grp]) => {
+      acc[pos] = Math.max(0, ...grp.map((t) => toastState.widths[t.id] || 0));
+      return acc;
+    }, {})
+  );
 </script>
 
 {#each Object.entries(groupedToasts) as [position, group] (position)}
-  <div class="toast {position}" style={`z-index: ${zIndex};`}>
+  <div
+    class="toast {position}"
+    style={`min-width: ${maxWidths[position]}px; transition: min-width 0.3s ease-in-out; z-index: ${zIndex};`}
+  >
     {#each group as toast (toast.id)}
       <Toast {toast} position={toast.position} />
     {/each}

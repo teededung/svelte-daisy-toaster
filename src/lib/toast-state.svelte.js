@@ -2,6 +2,7 @@ import { getContext, onDestroy, setContext } from 'svelte';
 
 export class ToastState {
 	toasts = $state([]);
+	widths = $state({});
 	toastToTimeoutMap = new Map();
 
 	constructor() {
@@ -44,7 +45,7 @@ export class ToastState {
 			// Wait for animation to complete
 			setTimeout(() => {
 				this.remove(id);
-			}, 300);
+			}, 350);
 		}
 	}
 
@@ -54,6 +55,7 @@ export class ToastState {
 			clearTimeout(timeout);
 			this.toastToTimeoutMap.delete(id);
 		}
+		delete this.widths[id];
 		const index = this.toasts.findIndex(toast => toast.id === id);
 		if (index !== -1) {
 			this.toasts.splice(index, 1);

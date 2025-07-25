@@ -140,6 +140,12 @@ Anywhere in your components:
   - `durationMs`: number in ms (default: 5000)
   - `style`: 'outline' | 'dash' | 'soft' (optional)
   - `position`: shorthand like `bottom-center`, `top-right`, `middle-left` **or** full DaisyUI classes (`toast-bottom toast-center`). Default is `top-right`. Supports flexible order like `center-bottom` or `bottom-center`.
+  - `showCloseButton`: boolean (default: false) - If true, shows a close button in the corner of the toast
+  - `button`: object (optional) - Custom action button with:
+    - `text`: string (default: 'OK') - Button text
+    - `class`: string (optional) - Additional CSS classes for the button (e.g., 'btn-primary')
+    - `callback`: function (optional) - Function called when button is clicked, receives toast object
+    - `closeOnClick`: boolean (default: true) - Whether to automatically close the toast after button click
 
 **String format (default style):**
 
@@ -163,47 +169,9 @@ Shortcuts (signature):
 - `getToastState()`: Get current toast state
 - `ToastState` class: For custom implementations
 
-## Toast Positions
-
-The library supports 9 different positions in a 3x3 grid layout:
-
-### Available Positions
-
-**Top Row:**
-
-- `top-left` or `left-top`
-- `top-center` or `center-top`
-- `top-right` or `right-top`
-
-**Middle Row:**
-
-- `middle-left` or `left-middle`
-- `middle-center` or `center-middle`
-- `middle-right` or `right-middle`
-
-**Bottom Row:**
-
-- `bottom-left` or `left-bottom`
-- `bottom-center` or `center-bottom`
-- `bottom-right` or `right-bottom`
-
-### Position Examples
-
-```svelte
-// Middle positions
-toast.info('Left side notification', 3000, 'middle-left');
-toast.success('Center notification', 3000, 'center-middle');
-toast.warning('Right side notification', 3000, 'right-middle');
-
-// Flexible order - both work the same
-toast.error('Bottom center', 3000, 'bottom-center');
-toast.error('Bottom center', 3000, 'center-bottom'); // Same result
-
-// You can also use DaisyUI classes directly
-toast.info('Direct DaisyUI', 3000, 'toast-middle toast-start');
-```
-
 ## Examples
+
+### Basic Usage
 
 Default style toast (default color, just `alert` class):
 
@@ -227,26 +195,49 @@ Success toast with title using shortcut:
 toast.success('Operation completed successfully', 3000, 'top-right', 'soft', 'Success!');
 ```
 
-Success toast at bottom-center:
+Toast with close button:
 
 ```svelte
-toast.success('Saved!', 3000, 'toast-bottom toast-center');
+toast({
+  message: 'This toast has a close button',
+  showCloseButton: true
+});
 ```
 
-Error toast at bottom-center, dashed border style:
+Toast with custom button:
+
+```svelte
+toast({
+  message: 'Would you like to proceed?',
+  button: {
+    text: 'Yes',
+    class: 'btn-primary',
+    callback: (toast) => {
+      console.log('Button clicked for toast:', toast.id);
+      // Custom logic here
+    },
+    closeOnClick: false  // Keep toast open after click
+  }
+});
+```
+
+### Styling Options
+
+Default style with options object:
+
+```svelte
+toast({
+  type: 'default',
+  message: 'Clean notification',
+  durationMs: 4000,
+  position: 'top-center'
+});
+```
+
+Error toast with dashed border style:
 
 ```svelte
 toast.error('Something went wrong', 5000, 'bottom-center', 'dash');
-```
-
-Middle position toasts:
-
-```svelte
-// Middle left notification
-toast.info('Processing...', 4000, 'middle-left');
-
-// Center middle with flexible order
-toast.warning('Important update', 3000, 'center-middle');
 ```
 
 Custom toast with options object:
@@ -261,15 +252,39 @@ toast({
 });
 ```
 
-Default style with options object:
+### Toast Positions
+
+The library supports 9 different positions in a 3x3 grid layout. You can use shorthand notation or DaisyUI classes directly.
+
+**Available positions:**
+
+- **Top Row:** `top-left`, `top-center`, `top-right`
+- **Middle Row:** `middle-left`, `middle-center`, `middle-right`
+- **Bottom Row:** `bottom-left`, `bottom-center`, `bottom-right`
+
+**Position examples:**
 
 ```svelte
-toast({
-  type: 'default',
-  message: 'Clean notification',
-  durationMs: 4000,
-  position: 'top-center'
-});
+// Top positions
+toast.info('Top left notification', 3000, 'top-left');
+toast.success('Top center notification', 3000, 'top-center');
+toast.warning('Top right notification', 3000, 'top-right');
+
+// Middle positions
+toast.info('Left side notification', 3000, 'middle-left');
+toast.success('Center notification', 3000, 'center-middle');
+toast.warning('Right side notification', 3000, 'right-middle');
+
+// Bottom positions
+toast.error('Bottom left', 3000, 'bottom-left');
+toast.success('Bottom center', 3000, 'bottom-center');
+toast.info('Bottom right', 3000, 'bottom-right');
+
+// Flexible order - both work the same
+toast.error('Bottom center', 3000, 'center-bottom'); // Same as 'bottom-center'
+
+// You can also use DaisyUI classes directly
+toast.info('Direct DaisyUI', 3000, 'toast-middle toast-start');
 ```
 
 ## Customization
