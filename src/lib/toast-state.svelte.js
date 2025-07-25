@@ -13,7 +13,7 @@ export class ToastState {
 		});
 	}
 
-	add({ type = 'default', message = '', title, durationMs = 5000, position = 'top-right', style } = {}) {
+	add({ type = 'default', message = '', title, durationMs = 5000, position = 'top-right', style, button, showCloseButton = false } = {}) {
 		const id = crypto.randomUUID();
 		this.toasts.push({
 			id,
@@ -22,7 +22,10 @@ export class ToastState {
 			title,
 			position,
 			style,
-			visible: true
+			button,
+			showCloseButton,
+			visible: true,
+			_toastState: this // Add reference to toast state for callbacks
 		});
 
 		this.toastToTimeoutMap.set(

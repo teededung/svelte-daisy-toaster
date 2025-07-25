@@ -56,10 +56,10 @@
 </script>
 
 {#if visible}
-  <button
+  <div
     in:fly={{ x: -exitAnimation.x, y: -exitAnimation.y, duration: 300 }}
     out:fly={exitAnimation}
-    class="alert cursor-pointer flex items-center gap-2"
+    class="alert flex items-center gap-2 relative"
     class:alert-vertical={toast.title}
     class:sm:alert-horizontal={toast.title}
     class:alert-info={toast.type === "info"}
@@ -69,9 +69,33 @@
     class:alert-outline={toast.style === "outline"}
     class:alert-dash={toast.style === "dash"}
     class:alert-soft={toast.style === "soft"}
-    {onclick}
-    type="button"
+    role="alert"
   >
+    {#if toast.showCloseButton}
+      <button
+        class="absolute cursor-pointer btn-outline w-5 h-5 rounded-full flex items-center justify-center bg-black text-white border-1 border-white hover:bg-white hover:text-black transition-all duration-300"
+        class:-top-2={true}
+        class:-right-2={!toast.position?.includes("right")}
+        class:-left-2={toast.position?.includes("right")}
+        onclick={() => toastState.startRemoval(toast.id)}
+        aria-label="Close notification"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    {/if}
     {#if toast.type === "default"}
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +196,22 @@
     {:else}
       <span>{toast.message}</span>
     {/if}
-  </button>
+    {#if toast.button}
+      <button
+        class="btn btn-xs {toast.button.class || 'btn-outline'}"
+        onclick={() => {
+          if (toast.button.callback) {
+            toast.button.callback(toast);
+          }
+          if (toast.button.closeOnClick !== false) {
+            toastState.startRemoval(toast.id);
+          }
+        }}
+      >
+        {toast.button.text || "OK"}
+      </button>
+    {/if}
+  </div>
 {/if}
 
 <style>

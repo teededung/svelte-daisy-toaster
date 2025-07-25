@@ -130,6 +130,240 @@
       style: "soft",
     });
   }
+
+  // Test button functions
+  function showBasicButton() {
+    toast({
+      type: "info",
+      message: "This toast has a button!",
+      button: {
+        text: "Click me",
+        callback: (toast) => {
+          alert(`Button clicked! Toast ID: ${toast.id}`);
+        },
+      },
+    });
+  }
+
+  function showButtonWithTitle() {
+    toast({
+      type: "success",
+      title: "Download Complete",
+      message: "Your file has been downloaded successfully.",
+      button: {
+        text: "Open Folder",
+        callback: () => {
+          alert("Opening downloads folder...");
+        },
+      },
+    });
+  }
+
+  function showButtonNoAutoClose() {
+    toast({
+      type: "warning",
+      title: "Confirm Action",
+      message: "Are you sure you want to proceed?",
+      durationMs: 10000, // 10 seconds
+      button: {
+        text: "Confirm",
+        class: "btn-warning",
+        closeOnClick: false, // Don't auto close
+        callback: (toast) => {
+          alert("Action confirmed!");
+          // Use the toast state reference from the toast object
+          setTimeout(() => {
+            toast._toastState.startRemoval(toast.id);
+          }, 1000);
+        },
+      },
+    });
+  }
+
+  function showButtonDifferentStyles() {
+    const styles = [
+      { class: "btn-primary", text: "Primary" },
+      { class: "btn-secondary", text: "Secondary" },
+      { class: "btn-accent", text: "Accent" },
+      { class: "btn-ghost", text: "Ghost" },
+    ];
+
+    styles.forEach((style, index) => {
+      setTimeout(() => {
+        toast({
+          type: "info",
+          message: `Button with ${style.text.toLowerCase()} style`,
+          position: "top-right",
+          button: {
+            text: style.text,
+            class: style.class,
+            callback: () => {
+              alert(`${style.text} button clicked!`);
+            },
+          },
+        });
+      }, index * 500);
+    });
+  }
+
+  function showErrorWithRetry() {
+    toast({
+      type: "error",
+      title: "Upload Failed",
+      message: "Failed to upload file. Network error occurred.",
+      durationMs: 8000,
+      button: {
+        text: "Retry",
+        class: "btn-error",
+        callback: () => {
+          // Simulate retry
+          toast.info("Retrying upload...");
+          setTimeout(() => {
+            toast.success("Upload successful!");
+          }, 2000);
+        },
+      },
+    });
+  }
+
+  // Test close button functions
+  function showWithCloseButton() {
+    toast({
+      type: "info",
+      message: "This toast has a close button in the corner!",
+      showCloseButton: true,
+      durationMs: 10000, // Longer duration to test close button
+    });
+  }
+
+  function showCloseButtonWithTitle() {
+    toast({
+      type: "success",
+      title: "Transaction Confirmed",
+      message: "Swapping 0.2 SUI for 0.747872 USDC",
+      showCloseButton: true,
+      durationMs: 15000,
+    });
+  }
+
+  function showCloseButtonWithActionButton() {
+    toast({
+      type: "warning",
+      title: "Confirm Action",
+      message: "Are you sure you want to proceed with this transaction?",
+      showCloseButton: true,
+      durationMs: 20000,
+      button: {
+        text: "Confirm",
+        class: "btn-warning",
+        callback: () => {
+          toast.success("Transaction confirmed!", 3000);
+        },
+      },
+    });
+  }
+
+  function showCloseButtonDifferentStyles() {
+    const styles = ["outline", "dash", "soft"];
+    const types = ["info", "success", "warning", "error"];
+
+    styles.forEach((style, index) => {
+      setTimeout(() => {
+        toast({
+          type: types[index % types.length],
+          title: `${style.charAt(0).toUpperCase() + style.slice(1)} Style`,
+          message: `This toast uses ${style} style with close button`,
+          style: style,
+          showCloseButton: true,
+          durationMs: 12000,
+          position: "top-right",
+        });
+      }, index * 800);
+    });
+  }
+
+  // GitHub link example
+  function showGitHubToast() {
+    toast({
+      type: "info",
+      title: "Check out our repository!",
+      message: "Visit our GitHub page for more information and updates",
+      showCloseButton: true,
+      durationMs: 10000,
+      button: {
+        text: "Open GitHub",
+        class: "btn-primary",
+        callback: () => {
+          window.open(
+            "https://github.com/teededung/svelte-daisy-toaster",
+            "_blank"
+          );
+        },
+        closeOnClick: false, // Keep toast open so user can click multiple times if needed
+      },
+    });
+  }
+
+  // Test close button position examples
+  function showCloseButtonPositions() {
+    // Left positions - close button should be at top-left (-top-2 -left-2)
+    setTimeout(() => {
+      toast({
+        type: "info",
+        title: "Left Position",
+        message: "Close button at TOP-LEFT corner",
+        position: "top-left",
+        showCloseButton: true,
+        durationMs: 15000,
+      });
+    }, 0);
+
+    setTimeout(() => {
+      toast({
+        type: "success",
+        title: "Left Position",
+        message: "Close button at TOP-LEFT corner",
+        position: "middle-left",
+        showCloseButton: true,
+        durationMs: 15000,
+      });
+    }, 500);
+
+    // Right positions - close button should be at top-right (-top-2 -right-2)
+    setTimeout(() => {
+      toast({
+        type: "warning",
+        title: "Right Position",
+        message: "Close button at TOP-RIGHT corner",
+        position: "top-right",
+        showCloseButton: true,
+        durationMs: 15000,
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      toast({
+        type: "error",
+        title: "Right Position",
+        message: "Close button at TOP-RIGHT corner",
+        position: "middle-right",
+        showCloseButton: true,
+        durationMs: 15000,
+      });
+    }, 1500);
+
+    // Center positions - close button should be at top-left (-top-2 -left-2)
+    setTimeout(() => {
+      toast({
+        type: "info",
+        title: "Center Position",
+        message: "Close button at TOP-LEFT corner",
+        position: "center-middle",
+        showCloseButton: true,
+        durationMs: 15000,
+      });
+    }, 2000);
+  }
 </script>
 
 <div class="container mx-auto p-8">
@@ -251,6 +485,84 @@
           <button class="btn btn-warning btn-soft" onclick={showSoftWithTitle}
             >Soft + Title</button
           >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Button Toast Examples -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Button Toast Examples</h2>
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-lg font-medium mb-2">Basic Button Usage</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-info" onclick={showBasicButton}>
+            Basic Button
+          </button>
+          <button class="btn btn-success" onclick={showButtonWithTitle}>
+            Button with Title
+          </button>
+          <button class="btn btn-warning" onclick={showButtonNoAutoClose}>
+            No Auto Close
+          </button>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-medium mb-2">Button Styles</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-neutral" onclick={showButtonDifferentStyles}>
+            Different Button Styles
+          </button>
+          <button class="btn btn-error" onclick={showErrorWithRetry}>
+            Error with Retry
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Close Button Examples -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Close Button Examples</h2>
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-lg font-medium mb-2">Basic Close Button</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-info" onclick={showWithCloseButton}>
+            Simple Close Button
+          </button>
+          <button class="btn btn-success" onclick={showCloseButtonWithTitle}>
+            Close Button with Title
+          </button>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-medium mb-2">Close Button + Action Button</h3>
+        <div class="flex flex-wrap gap-2">
+          <button
+            class="btn btn-warning"
+            onclick={showCloseButtonWithActionButton}
+          >
+            Both Close & Action Button
+          </button>
+          <button
+            class="btn btn-neutral"
+            onclick={showCloseButtonDifferentStyles}
+          >
+            Close Button + Different Styles
+          </button>
+          <button class="btn btn-primary" onclick={showGitHubToast}>
+            Open GitHub Link
+          </button>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-medium mb-2">Close Button Positioning</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-accent" onclick={showCloseButtonPositions}>
+            Test Left vs Right Positioning
+          </button>
         </div>
       </div>
     </div>
