@@ -1,1 +1,2 @@
-export const prerender = true
+// This enables prerendering for all routes
+export const prerender = true;

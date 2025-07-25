@@ -26,6 +26,9 @@ vite.config.ts.timestamp-*
 # SvelteKit
 .svelte-kit/
 
+# Vercel
+.vercel
+
 # Environment variables
 .env
 .env.local
