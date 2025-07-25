@@ -487,6 +487,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sveltejs/adapter-static@npm:^3.0.8":
+  version: 3.0.8
+  resolution: "@sveltejs/adapter-static@npm:3.0.8"
+  peerDependencies:
+    "@sveltejs/kit": ^2.0.0
+  checksum: 10c0/0ae958463d074c49b733059f53b685ee26e0debe9207aad5d77ea1b651a1efc743647f9c0cf78d72ae0243e23ece4b620b0600f17ec83e732791a265fea6df4f
+  languageName: node
+  linkType: hard
+
 "@sveltejs/kit@npm:^2.26.0":
   version: 2.26.0
   resolution: "@sveltejs/kit@npm:2.26.0"
@@ -1990,12 +1999,14 @@ __metadata:
   resolution: "svelte-daisy-toaster@workspace:."
   dependencies:
     "@sveltejs/adapter-auto": "npm:^6.0.1"
+    "@sveltejs/adapter-static": "npm:^3.0.8"
     "@sveltejs/kit": "npm:^2.26.0"
     "@sveltejs/package": "npm:^2.4.0"
     "@sveltejs/vite-plugin-svelte": "npm:^6.1.0"
     "@tailwindcss/vite": "npm:^4.1.11"
     daisyui: "npm:^5.0.47"
     svelte: "npm:^5.36.16"
+    tailwindcss: "npm:^4.1.11"
     typescript: "npm:^5.8.3"
     vite: "npm:^7.0.6"
   peerDependencies:
@@ -2040,7 +2051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:4.1.11":
+"tailwindcss@npm:4.1.11, tailwindcss@npm:^4.1.11":
   version: 4.1.11
   resolution: "tailwindcss@npm:4.1.11"
   checksum: 10c0/e23eed0a0d6557b3aff8ba320b82758988ca67c351ee9b33dfc646e83a64f6eaeca6183dfc97e931f7b2fab46e925090066edd697d2ede3f396c9fdeb4af24c1
