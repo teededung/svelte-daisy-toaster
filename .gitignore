@@ -12,6 +12,9 @@ build/
 
 # Vite
 .vite/
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 
 # SvelteKit
 .svelte-kit/
@@ -31,5 +34,6 @@ logs/
 .vscode/
 .idea/
 
-# macOS
+# OS
 .DS_Store
+Thumbs.db

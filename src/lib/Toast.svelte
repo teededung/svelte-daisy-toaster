@@ -1,9 +1,10 @@
 <script>
   import { getToastState } from "./toast-state.svelte.js";
   import { fly } from "svelte/transition";
-  let { toast, isAnimate = true } = $props();
+  let { toast, isAnimate = true, position = "top-right" } = $props();
   const toastState = getToastState();
   let isAnimated = $state(false);
+  let visible = $state(toast.visible ?? true);
 
   $effect(() => {
     if (isAnimate) {
@@ -11,146 +12,170 @@
     }
   });
 
+  // Watch for changes in toast.visible from the toast state
+  $effect(() => {
+    visible = toast.visible ?? true;
+  });
+
   // Close toast when clicked
   function onclick() {
-    toastState.remove(toast.id);
+    toastState.startRemoval(toast.id);
   }
+
+  // Calculate exit animation based on position
+  function getExitAnimation() {
+    const [vertical, horizontal] = position.split("-");
+
+    // Default values
+    let x = 0,
+      y = 0;
+
+    // Determine horizontal direction
+    if (horizontal === "right" || horizontal === "end") {
+      x = 100; // Exit to right
+    } else if (horizontal === "left" || horizontal === "start") {
+      x = -100; // Exit to left
+    }
+
+    // Determine vertical direction for center positions
+    if (horizontal === "center") {
+      if (vertical === "top") {
+        y = -100; // Exit upward
+      } else if (vertical === "bottom") {
+        y = 100; // Exit downward
+      } else {
+        // Middle center - default to right
+        x = 100;
+      }
+    }
+
+    return { x, y, duration: 300 };
+  }
+
+  const exitAnimation = getExitAnimation();
 </script>
 
-<button
-  class="alert cursor-pointer flex items-center gap-2"
-  class:alert-vertical={toast.title}
-  class:sm:alert-horizontal={toast.title}
-  class:alert-info={toast.type === "info"}
-  class:alert-success={toast.type === "success"}
-  class:alert-warning={toast.type === "warning"}
-  class:alert-error={toast.type === "error"}
-  class:alert-outline={toast.style === "outline"}
-  class:alert-dash={toast.style === "dash"}
-  class:alert-soft={toast.style === "soft"}
-  {onclick}
-  out:fly={{ x: 100, duration: 300 }}
-  type="button"
->
-  {#if toast.type === "default"}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="text-info"
-      class:animate-icon={isAnimated}
-    >
-      <circle cx="12" cy="12" r="10" />
-      <g class:animate-path={isAnimated}>
-        <line x1="12" x2="12" y1="8" y2="12" />
-        <line x1="12" x2="12.01" y1="16" y2="16" />
-      </g>
-    </svg>
-  {:else if toast.type === "info"}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class:animate-icon={isAnimated}
-    >
-      <circle cx="12" cy="12" r="10" />
-      <g class:animate-path={isAnimated}>
-        <line x1="12" x2="12" y1="8" y2="12" />
-        <line x1="12" x2="12.01" y1="16" y2="16" />
-      </g>
-    </svg>
-  {:else if toast.type === "success"}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="check-icon"
-      class:animate={isAnimated}
-    >
-      <path d="M4 12l5 5L20 6" class="check-path" />
-    </svg>
-  {:else if toast.type === "warning"}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class:animate-icon={isAnimated}
-    >
-      <path
-        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
-      />
-      <path d="M12 9v4" />
-      <path d="M12 17h.01" />
-    </svg>
-  {:else if toast.type === "error"}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="x-icon"
-      class:animate={isAnimated}
-    >
-      <path d="M18 6 6 18" class="diagonal-1" />
-      <path d="m6 6 12 12" class="diagonal-2" />
-    </svg>
-  {/if}
-  {#if toast.title}
-    <div>
-      <h3 class="font-bold">{toast.title}</h3>
-      <div class="text-xs">{toast.message}</div>
-    </div>
-  {:else}
-    <span>{toast.message}</span>
-  {/if}
-</button>
+{#if visible}
+  <button
+    in:fly={{ x: -exitAnimation.x, y: -exitAnimation.y, duration: 300 }}
+    out:fly={exitAnimation}
+    class="alert cursor-pointer flex items-center gap-2"
+    class:alert-vertical={toast.title}
+    class:sm:alert-horizontal={toast.title}
+    class:alert-info={toast.type === "info"}
+    class:alert-success={toast.type === "success"}
+    class:alert-warning={toast.type === "warning"}
+    class:alert-error={toast.type === "error"}
+    class:alert-outline={toast.style === "outline"}
+    class:alert-dash={toast.style === "dash"}
+    class:alert-soft={toast.style === "soft"}
+    {onclick}
+    type="button"
+  >
+    {#if toast.type === "default"}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-info"
+        class:animate-icon={isAnimated}
+      >
+        <circle cx="12" cy="12" r="10" />
+        <g class:animate-path={isAnimated}>
+          <line x1="12" x2="12" y1="8" y2="12" />
+          <line x1="12" x2="12.01" y1="16" y2="16" />
+        </g>
+      </svg>
+    {:else if toast.type === "info"}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class:animate-icon={isAnimated}
+      >
+        <circle cx="12" cy="12" r="10" />
+        <g class:animate-path={isAnimated}>
+          <line x1="12" x2="12" y1="8" y2="12" />
+          <line x1="12" x2="12.01" y1="16" y2="16" />
+        </g>
+      </svg>
+    {:else if toast.type === "success"}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="check-icon"
+        class:animate={isAnimated}
+      >
+        <path d="M4 12l5 5L20 6" class="check-path" />
+      </svg>
+    {:else if toast.type === "warning"}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class:animate-icon={isAnimated}
+      >
+        <path
+          d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+        />
+        <path d="M12 9v4" />
+        <path d="M12 17h.01" />
+      </svg>
+    {:else if toast.type === "error"}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="x-icon"
+        class:animate={isAnimated}
+      >
+        <path d="M18 6 6 18" class="diagonal-1" />
+        <path d="m6 6 12 12" class="diagonal-2" />
+      </svg>
+    {/if}
+    {#if toast.title}
+      <div>
+        <h3 class="font-bold">{toast.title}</h3>
+        <div class="text-xs">{toast.message}</div>
+      </div>
+    {:else}
+      <span>{toast.message}</span>
+    {/if}
+  </button>
+{/if}
 
 <style>
-  .icon-check::after {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    vertical-align: -0.125em;
-    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
-  }
-
-  .icon-x::after {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    vertical-align: -0.125em;
-    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M18 6L6 18M6 6l12 12'/%3E%3C/svg%3E");
-  }
-
   .animate-icon {
     animation: primaryAnimation 0.5s ease-in-out;
   }

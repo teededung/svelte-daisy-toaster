@@ -21,15 +21,28 @@ export class ToastState {
 			message,
 			title,
 			position,
-			style
+			style,
+			visible: true
 		});
 
 		this.toastToTimeoutMap.set(
 			id,
 			setTimeout(() => {
-				this.remove(id);
+				this.startRemoval(id);
 			}, durationMs)
 		);
+	}
+
+	startRemoval(id) {
+		// Set visible to false to trigger animation
+		const toast = this.toasts.find(t => t.id === id);
+		if (toast) {
+			toast.visible = false;
+			// Wait for animation to complete
+			setTimeout(() => {
+				this.remove(id);
+			}, 300);
+		}
 	}
 
 	remove(id) {

@@ -139,7 +139,7 @@ Anywhere in your components:
   - `title`: string (optional) - when provided, creates a structured alert with title and message
   - `durationMs`: number in ms (default: 5000)
   - `style`: 'outline' | 'dash' | 'soft' (optional)
-  - `position`: shorthand like `bottom-center`, `top-right` **or** full DaisyUI classes (`toast-bottom toast-center`). Default is `top-right`.
+  - `position`: shorthand like `bottom-center`, `top-right`, `middle-left` **or** full DaisyUI classes (`toast-bottom toast-center`). Default is `top-right`. Supports flexible order like `center-bottom` or `bottom-center`.
 
 **String format (default style):**
 
@@ -162,6 +162,46 @@ Shortcuts (signature):
 - `setToastState()`: Initialize toast state context
 - `getToastState()`: Get current toast state
 - `ToastState` class: For custom implementations
+
+## Toast Positions
+
+The library supports 9 different positions in a 3x3 grid layout:
+
+### Available Positions
+
+**Top Row:**
+
+- `top-left` or `left-top`
+- `top-center` or `center-top`
+- `top-right` or `right-top`
+
+**Middle Row:**
+
+- `middle-left` or `left-middle`
+- `middle-center` or `center-middle`
+- `middle-right` or `right-middle`
+
+**Bottom Row:**
+
+- `bottom-left` or `left-bottom`
+- `bottom-center` or `center-bottom`
+- `bottom-right` or `right-bottom`
+
+### Position Examples
+
+```svelte
+// Middle positions
+toast.info('Left side notification', 3000, 'middle-left');
+toast.success('Center notification', 3000, 'center-middle');
+toast.warning('Right side notification', 3000, 'right-middle');
+
+// Flexible order - both work the same
+toast.error('Bottom center', 3000, 'bottom-center');
+toast.error('Bottom center', 3000, 'center-bottom'); // Same result
+
+// You can also use DaisyUI classes directly
+toast.info('Direct DaisyUI', 3000, 'toast-middle toast-start');
+```
 
 ## Examples
 
@@ -197,6 +237,16 @@ Error toast at bottom-center, dashed border style:
 
 ```svelte
 toast.error('Something went wrong', 5000, 'bottom-center', 'dash');
+```
+
+Middle position toasts:
+
+```svelte
+// Middle left notification
+toast.info('Processing...', 4000, 'middle-left');
+
+// Center middle with flexible order
+toast.warning('Important update', 3000, 'center-middle');
 ```
 
 Custom toast with options object:
