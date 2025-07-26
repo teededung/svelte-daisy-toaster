@@ -16,7 +16,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "package": "svelte-package",
-    "prepublishOnly": "yarn package"
+    "prepublishOnly": "yarn package",
+    "publish": "yarn npm publish"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "^5.8.1",
