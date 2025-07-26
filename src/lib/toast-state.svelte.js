@@ -38,11 +38,11 @@ export class ToastState {
 	}
 
 	startRemoval(id) {
-		// Set visible to false to trigger animation
+		// set visible to false to trigger animation
 		const toast = this.toasts.find(t => t.id === id);
 		if (toast) {
 			toast.visible = false;
-			// Wait for animation to complete
+			// wait for animation to complete
 			setTimeout(() => {
 				this.remove(id);
 			}, 350);
@@ -77,12 +77,12 @@ export function getToastState() {
 }
 
 export function toast(options) {
-  // Nếu options là string, chuyển thành object với style default
+  // if options is string, convert to object with default style
   if (typeof options === 'string') {
     options = { message: options, type: 'default' };
   }
   
-  // ưu tiên lấy từ context – an toàn khi gọi trong component con
+  // priority get from context - safe when calling in child component
   let ts;
   try {
     ts = getContext(TOAST_KEY);
@@ -95,7 +95,7 @@ export function toast(options) {
   else console.warn('ToastState not initialized, toast skipped:', options.message);
 }
 
-// đường tắt: toast.success('...'), v.v.
+// shortcut: toast.success('...'), v.v.
 ['info', 'success', 'warning', 'error'].forEach(t => {
   toast[t] = (msg, d, pos, s, title) => toast({ type: t, message: msg, durationMs: d, position: pos, style: s, title });
 });

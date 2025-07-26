@@ -240,18 +240,6 @@ Error toast with dashed border style:
 toast.error('Something went wrong', 5000, 'bottom-center', 'dash');
 ```
 
-Custom toast with options object:
-
-```svelte
-toast({
-  type: 'success',
-  message: 'Item screenshot copied to clipboard!',
-  style: 'soft',
-  durationMs: 3000,
-  position: 'toast-bottom toast-center'
-});
-```
-
 ### Toast Positions
 
 The library supports 9 different positions in a 3x3 grid layout. You can use shorthand notation or DaisyUI classes directly.
