@@ -216,17 +216,43 @@ export function toast(options) {
     console.warn("ToastState not initialized, toast skipped:", options.message);
 }
 
-// shortcut: toast.success('...'), v.v.
+// shortcut: toast.success('...'), v.v. with flexible options
 ["info", "success", "warning", "error"].forEach((t) => {
-  toast[t] = (msg, d, pos, s, title) =>
-    toast({
+  /**
+   * Shortcut helper that supports both legacy params and an options object.
+   *
+   * Legacy:
+   *   toast.success(message, durationMs?, position?, style?, title?)
+   * Options object (second arg):
+   *   toast.success(message, { durationMs, position, style, title, ... })
+   * Or full options object as first param:
+   *   toast.success({ message, durationMs, ... })
+   */
+  toast[t] = (messageOrOptions, d, pos, s, title) => {
+    // Case 1: first arg is an options object
+    if (
+      messageOrOptions &&
+      typeof messageOrOptions === "object" &&
+      !Array.isArray(messageOrOptions)
+    ) {
+      return toast({ type: t, ...messageOrOptions });
+    }
+
+    // Case 2: second arg is an options object
+    if (d && typeof d === "object" && !Array.isArray(d)) {
+      return toast({ type: t, message: String(messageOrOptions ?? ""), ...d });
+    }
+
+    // Case 3: legacy positional params
+    return toast({
       type: t,
-      message: msg,
+      message: String(messageOrOptions ?? ""),
       durationMs: d,
       position: pos,
       style: s,
       title,
     });
+  };
 });
 
 // loading helper that returns an object with controls

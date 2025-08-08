@@ -151,12 +151,20 @@ Anywhere in your components:
 
 - `toast(message)`: Creates a simple toast with default styling (only `alert` class, no color)
 
-Shortcuts (signature):
+Shortcuts (flexible signatures):
 
 - `toast.info(message, durationMs?, position?, style?, title?)`
+- `toast.info(message, options?)`
+- `toast.info(options)`
 - `toast.success(message, durationMs?, position?, style?, title?)`
+- `toast.success(message, options?)`
+- `toast.success(options)`
 - `toast.warning(message, durationMs?, position?, style?, title?)`
+- `toast.warning(message, options?)`
+- `toast.warning(options)`
 - `toast.error(message, durationMs?, position?, style?, title?)`
+- `toast.error(message, options?)`
+- `toast.error(options)`
 - `toast.loading(message, options?)` → returns controller with `{ id, success, error, info, warning, update, dismiss }`
 
 ### Components
@@ -210,6 +218,31 @@ Default style toast (default color, just `alert` class):
 
 ```svelte
 toast('Simple notification message');
+```
+
+Using shortcuts with options object:
+
+```js
+toast.success("Saved!", {
+  durationMs: 2000,
+  position: "top-right",
+  title: "Success",
+  style: "soft",
+  showCloseButton: true,
+});
+// Or pass full options as first argument
+toast.error({
+  message: "Failed to save",
+  position: "bottom-center",
+  title: "Error",
+  button: {
+    text: "Retry",
+    class: "btn-error",
+    callback: () => {
+      /* ... */
+    },
+  },
+});
 ```
 
 Toast with title (structured layout):
