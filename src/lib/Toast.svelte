@@ -144,6 +144,12 @@
           <line x1="12" x2="12.01" y1="16" y2="16" />
         </g>
       </svg>
+    {:else if toast.type === "loading"}
+      <span
+        class="loading loading-spinner loading-xs"
+        aria-live="polite"
+        aria-busy="true"
+      ></span>
     {:else if toast.type === "success"}
       <svg
         xmlns="http://www.w3.org/2000/svg"

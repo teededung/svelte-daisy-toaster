@@ -157,6 +157,7 @@ Shortcuts (signature):
 - `toast.success(message, durationMs?, position?, style?, title?)`
 - `toast.warning(message, durationMs?, position?, style?, title?)`
 - `toast.error(message, durationMs?, position?, style?, title?)`
+- `toast.loading(message, options?)` → returns controller with `{ id, success, error, info, warning, update, dismiss }`
 
 ### Components
 
@@ -170,6 +171,38 @@ Shortcuts (signature):
 - `ToastState` class: For custom implementations
 
 ## Examples
+
+### Loading Toasts
+
+Show a persistent loading toast and then resolve it to success (or error):
+
+```svelte
+<script>
+  import { toast } from 'svelte-daisy-toaster';
+
+  async function runTask() {
+    const t = toast.loading('Uploading file...'); // persistent (no auto-dismiss)
+    try {
+      await new Promise((r) => setTimeout(r, 1500));
+      t.success('Upload complete', { durationMs: 2000, title: 'Success' });
+    } catch (e) {
+      t.error('Upload failed', { durationMs: 3000, title: 'Error' });
+    }
+  }
+</script>
+
+<button onclick={runTask}>Run async task</button>
+```
+
+You can also update or dismiss manually:
+
+```js
+const t = toast.loading("Processing...", { position: "bottom-center" });
+// later
+t.update({ message: "Almost done..." });
+// or
+t.dismiss();
+```
 
 ### Basic Usage
 

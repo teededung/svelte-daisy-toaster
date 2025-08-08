@@ -22,6 +22,34 @@
     toast.info("Info: This is an information message.");
   }
 
+  // Loading demo
+  async function showLoadingFlow() {
+    const t = toast.loading("Loading data...", {
+      position: "top-right",
+      title: "Test loading",
+    });
+
+    await new Promise((r) => setTimeout(r, 1200));
+    t.update({ title: "Test loading", message: "Almost done..." });
+    await new Promise((r) => setTimeout(r, 1200));
+
+    // random success or error
+    if (Math.random() > 0.5) {
+      t.success("Done!", { durationMs: 2000, title: "Success" });
+    } else {
+      t.error("Failed", {
+        durationMs: 3000,
+        title: "Error",
+        button: {
+          text: "Retry",
+          callback: () => {
+            showLoadingFlow();
+          },
+        },
+      });
+    }
+  }
+
   // Test position functions
   function showToastAtPosition(position) {
     const positionLabels = {
@@ -382,6 +410,9 @@
         Warning Toast
       </button>
       <button class="btn btn-info" onclick={showInfo}> Info Toast </button>
+      <button class="btn btn-neutral" onclick={showLoadingFlow}>
+        Loading Flow
+      </button>
     </div>
   </section>
 
