@@ -27,6 +27,7 @@ import { getContext, onDestroy, setContext } from "svelte";
  *  style?: ToastStyle,
  *  button?: ToastButton,
  *  showCloseButton?: boolean,
+ *  customClass?: string,
  *  visible: boolean,
  *  _toastState: ToastState
  * }} Toast
@@ -41,7 +42,8 @@ import { getContext, onDestroy, setContext } from "svelte";
  *  position?: string,
  *  style?: ToastStyle,
  *  button?: ToastButton,
- *  showCloseButton?: boolean
+ *  showCloseButton?: boolean,
+ *  customClass?: string
  * }} ToastOptions
  */
 
@@ -76,6 +78,7 @@ export class ToastState {
     style,
     button,
     showCloseButton = false,
+    customClass,
   } = {}) {
     const id = crypto.randomUUID();
     /** @type {Toast} */
@@ -88,6 +91,7 @@ export class ToastState {
       style,
       button,
       showCloseButton,
+      customClass,
       visible: true,
       /** @type {ToastState} */ _toastState: this, // reference to toast state for callbacks
     };

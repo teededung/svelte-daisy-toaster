@@ -68,8 +68,7 @@
     bind:this={alertRef}
     in:fly={{ x: -exitAnimation.x, y: -exitAnimation.y, duration: 300 }}
     out:fly={exitAnimation}
-    class="alert flex items-center gap-2 relative"
-    class:alert-vertical={toast.title}
+    class="{toast.customClass ?? ''} alert flex items-center gap-2 relative"
     class:sm:alert-horizontal={toast.title}
     class:alert-info={toast.type === "info"}
     class:alert-success={toast.type === "success"}
@@ -212,19 +211,22 @@
       <span>{toast.message}</span>
     {/if}
     {#if toast.button}
-      <button
-        class="btn btn-xs {toast.button.class || 'btn-outline'}"
-        onclick={() => {
-          if (toast.button.callback) {
-            toast.button.callback(toast);
-          }
-          if (toast.button.closeOnClick !== false) {
-            toastState.startRemoval(toast.id);
-          }
-        }}
-      >
-        {toast.button.text || "OK"}
-      </button>
+      <div class="ml-auto">
+        <button
+          class="btn btn-xs whitespace-nowrap {toast.button.class ||
+            'btn-outline'}"
+          onclick={() => {
+            if (toast.button.callback) {
+              toast.button.callback(toast);
+            }
+            if (toast.button.closeOnClick !== false) {
+              toastState.startRemoval(toast.id);
+            }
+          }}
+        >
+          {toast.button.text || "OK"}
+        </button>
+      </div>
     {/if}
   </div>
 {/if}

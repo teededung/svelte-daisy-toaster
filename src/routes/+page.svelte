@@ -392,6 +392,45 @@
       });
     }, 2000);
   }
+
+  // Test custom class functions
+  function showBasicCustomClass() {
+    toast.success("Success with custom class!", {
+      customClass: "mt-2 bg-yellow-100",
+    });
+  }
+
+  function showCustomClassWithTitle() {
+    toast({
+      type: "info",
+      title: "Custom Class Example",
+      message: "This toast has extra margin and padding.",
+      customClass: "m-4 p-4 border-2 border-blue-500",
+    });
+  }
+
+  function showCustomClassWithButton() {
+    toast({
+      type: "warning",
+      message: "Warning with custom styling and button.",
+      customClass: "rounded-xl bg-green-500",
+      button: {
+        text: "Acknowledge",
+        callback: () => {
+          alert("Acknowledged!");
+        },
+      },
+    });
+  }
+
+  function showCustomClassDifferentPositions() {
+    toast({
+      type: "success",
+      message: "Top-right with custom class",
+      position: "top-right",
+      customClass: "mt-10 mr-6",
+    });
+  }
 </script>
 
 <div class="container mx-auto p-8">
@@ -593,6 +632,38 @@
         <div class="flex flex-wrap gap-2">
           <button class="btn btn-accent" onclick={showCloseButtonPositions}>
             Test Left vs Right Positioning
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom Class Examples -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Custom Class Examples</h2>
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-lg font-medium mb-2">Basic Custom Class</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-success" onclick={showBasicCustomClass}>
+            Basic Custom Class
+          </button>
+          <button class="btn btn-info" onclick={showCustomClassWithTitle}>
+            Custom Class with Title
+          </button>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-medium mb-2">Advanced Custom Class</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-warning" onclick={showCustomClassWithButton}>
+            Custom Class: rounded-xl bg-green-500
+          </button>
+          <button
+            class="btn btn-neutral"
+            onclick={showCustomClassDifferentPositions}
+          >
+            Custom Class: mt-10 mr-6
           </button>
         </div>
       </div>
