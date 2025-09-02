@@ -433,6 +433,31 @@
   }
 </script>
 
+<svelte:head>
+  <title>Svelte Daisy Toaster - Toast Notifications Library</title>
+  <meta
+    name="description"
+    content="A beautiful and customizable toast notification library for Svelte, built with DaisyUI. Features include multiple positions, styles, buttons, and close buttons with smooth animations."
+  />
+  <meta
+    name="keywords"
+    content="svelte, toast, notifications, daisyui, library, component, ui, frontend, javascript"
+  />
+  <meta name="author" content="teededung" />
+  <meta property="og:title" content="Svelte Daisy Toaster" />
+  <meta
+    property="og:description"
+    content="Beautiful toast notifications for Svelte with DaisyUI styling"
+  />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Svelte Daisy Toaster" />
+  <meta
+    name="twitter:description"
+    content="Beautiful toast notifications for Svelte with DaisyUI styling"
+  />
+</svelte:head>
+
 <div class="container mx-auto p-8">
   <h1 class="text-3xl font-bold mb-8">Toast Demo</h1>
 

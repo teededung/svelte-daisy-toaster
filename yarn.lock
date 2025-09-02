@@ -700,28 +700,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/adapter-vercel@npm:^5.8.2":
-  version: 5.8.2
-  resolution: "@sveltejs/adapter-vercel@npm:5.8.2"
+"@sveltejs/adapter-vercel@npm:^5.10.2":
+  version: 5.10.2
+  resolution: "@sveltejs/adapter-vercel@npm:5.10.2"
   dependencies:
     "@vercel/nft": "npm:^0.30.0"
     esbuild: "npm:^0.25.4"
   peerDependencies:
     "@sveltejs/kit": ^2.4.0
-  checksum: 10c0/c53389b11a74653af5919fcf809ec604bead618ea833c72dca26c8522690c62dd70c19ed47952b9b056db89212f6c31b77075b25b69928514c1e898d38fe766c
+  checksum: 10c0/5f9e76ac0f68e9a6a3069fedf5b4f37dde935e5882fdd055ebef5034b33b236fa4955332673072f656a44d9a690ab154bb76cd3f498a863c1138c0c4b809f4e7
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^2.30.1":
-  version: 2.30.1
-  resolution: "@sveltejs/kit@npm:2.30.1"
+"@sveltejs/kit@npm:^2.37.0":
+  version: 2.37.0
+  resolution: "@sveltejs/kit@npm:2.37.0"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     "@sveltejs/acorn-typescript": "npm:^1.0.5"
     "@types/cookie": "npm:^0.6.0"
     acorn: "npm:^8.14.1"
     cookie: "npm:^0.6.0"
-    devalue: "npm:^5.1.0"
+    devalue: "npm:^5.3.2"
     esm-env: "npm:^1.2.2"
     kleur: "npm:^4.1.5"
     magic-string: "npm:^0.30.5"
@@ -730,18 +730,22 @@ __metadata:
     set-cookie-parser: "npm:^2.6.0"
     sirv: "npm:^3.0.0"
   peerDependencies:
+    "@opentelemetry/api": ^1.0.0
     "@sveltejs/vite-plugin-svelte": ^3.0.0 || ^4.0.0-next.1 || ^5.0.0 || ^6.0.0-next.0
     svelte: ^4.0.0 || ^5.0.0-next.0
     vite: ^5.0.3 || ^6.0.0 || ^7.0.0-beta.0
+  peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
   bin:
     svelte-kit: svelte-kit.js
-  checksum: 10c0/3f6552e30a0fcb61bce9a2d729a3155df36c74bae581d09852359e08acd043d9d96ad8d006ab3bef2526c35d5912d09ae76ac6aa832cce37483161bd2b512dbd
+  checksum: 10c0/a6c752b7698aca45975d7bbd657ede627914d7e46d28db49b5bcc5de97a1e87fc5357117cc45bf2b71e78aa6ee07790e46370292b43c946f51cb96a9ebaa0e51
   languageName: node
   linkType: hard
 
-"@sveltejs/package@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "@sveltejs/package@npm:2.4.1"
+"@sveltejs/package@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "@sveltejs/package@npm:2.5.0"
   dependencies:
     chokidar: "npm:^4.0.3"
     kleur: "npm:^4.1.5"
@@ -752,7 +756,7 @@ __metadata:
     svelte: ^3.44.0 || ^4.0.0 || ^5.0.0-next.1
   bin:
     svelte-package: svelte-package.js
-  checksum: 10c0/23334b4e9943e1590e87b0e097247da416a0fa644bddf124978a0a5a5c0df9e3717b6ae25f57a5afe96318363c7477c4562f986e2e9bdda6d51c902bca997933
+  checksum: 10c0/4909ece2d3d813a78762186d5fb4a6717ccb9cda577371f91b604125356ec880840a1aafdc3d53171ea2b205e7fbfe0afdfd2862875893b9bb9aae325da0daec
   languageName: node
   linkType: hard
 
@@ -769,9 +773,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/vite-plugin-svelte@npm:^6.1.2":
-  version: 6.1.2
-  resolution: "@sveltejs/vite-plugin-svelte@npm:6.1.2"
+"@sveltejs/vite-plugin-svelte@npm:^6.1.3":
+  version: 6.1.3
+  resolution: "@sveltejs/vite-plugin-svelte@npm:6.1.3"
   dependencies:
     "@sveltejs/vite-plugin-svelte-inspector": "npm:^5.0.0"
     debug: "npm:^4.4.1"
@@ -782,7 +786,7 @@ __metadata:
   peerDependencies:
     svelte: ^5.0.0
     vite: ^6.3.0 || ^7.0.0
-  checksum: 10c0/ab49dce742068d695d3f8441c9ce3db04fb6f8a7ae382f6aaf838743cea2e2ff76da4d9bd005fb322c0c3ee8720cea6481a966b3e015f27355b9c6ae0209d58b
+  checksum: 10c0/beeb36ddc01323e2ed3de9fe1281488090cee33f2f8b77e3552c919a92c331daf84bfbdb8a60ee6bf38686162da7a86e0b816b853d8701735abb33beb2e3548c
   languageName: node
   linkType: hard
 
@@ -1189,10 +1193,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"daisyui@npm:^5.0.50":
-  version: 5.0.50
-  resolution: "daisyui@npm:5.0.50"
-  checksum: 10c0/6e752fb803c6e4a1e6b4a628a2d79cc0f2012e93e72f7aa03688ed51c7edd4bed3e370938dca6ee27670b71aff834e310dfd33baa9fa1dfb2502dbfc3f794842
+"daisyui@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "daisyui@npm:5.1.3"
+  checksum: 10c0/60002a53afc016fe6112fabe50041c5bd2a2facf564842739796bf27ab05930d9164d87958a0929cc9d719b3c070595f8930977a4638d46808516a266bf5ae4e
   languageName: node
   linkType: hard
 
@@ -1229,10 +1233,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devalue@npm:^5.1.0":
-  version: 5.1.1
-  resolution: "devalue@npm:5.1.1"
-  checksum: 10c0/f6717a856fd54216959abd341cb189e47a9b37d72d8419e055ae77567ff4ed0fb683b1ffb6a71067f645adae5991bffabe6468a3e2385937bff49273e71c1f51
+"devalue@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "devalue@npm:5.3.2"
+  checksum: 10c0/2dab403779233224285afe4b30eaded038df10cb89b8f2c1e41dd855a8e6b634aa24175b87f64df665204bb9a6a6e7758d172682719b9c5cf3cef336ff9fa507
   languageName: node
   linkType: hard
 
@@ -1498,7 +1502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fdir@npm:^6.4.4, fdir@npm:^6.4.6":
+"fdir@npm:^6.4.4":
   version: 6.4.6
   resolution: "fdir@npm:6.4.6"
   peerDependencies:
@@ -1507,6 +1511,18 @@ __metadata:
     picomatch:
       optional: true
   checksum: 10c0/45b559cff889934ebb8bc498351e5acba40750ada7e7d6bde197768d2fa67c149be8ae7f8ff34d03f4e1eb20f2764116e56440aaa2f6689e9a4aa7ef06acafe9
+  languageName: node
+  linkType: hard
+
+"fdir@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "fdir@npm:6.5.0"
+  peerDependencies:
+    picomatch: ^3 || ^4
+  peerDependenciesMeta:
+    picomatch:
+      optional: true
+  checksum: 10c0/e345083c4306b3aed6cb8ec551e26c36bab5c511e99ea4576a16750ddc8d3240e63826cc624f5ae17ad4dc82e68a253213b60d556c11bfad064b7607847ed07f
   languageName: node
   linkType: hard
 
@@ -2395,16 +2411,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "svelte-daisy-toaster@workspace:."
   dependencies:
-    "@sveltejs/adapter-vercel": "npm:^5.8.2"
-    "@sveltejs/kit": "npm:^2.30.1"
-    "@sveltejs/package": "npm:^2.4.1"
-    "@sveltejs/vite-plugin-svelte": "npm:^6.1.2"
+    "@sveltejs/adapter-vercel": "npm:^5.10.2"
+    "@sveltejs/kit": "npm:^2.37.0"
+    "@sveltejs/package": "npm:^2.5.0"
+    "@sveltejs/vite-plugin-svelte": "npm:^6.1.3"
     "@tailwindcss/vite": "npm:^4.1.12"
-    daisyui: "npm:^5.0.50"
-    svelte: "npm:^5.38.1"
+    daisyui: "npm:^5.1.3"
+    svelte: "npm:^5.38.6"
     tailwindcss: "npm:^4.1.12"
     typescript: "npm:^5.9.2"
-    vite: "npm:^7.1.2"
+    vite: "npm:^7.1.4"
   peerDependencies:
     daisyui: ^5.0.46
     svelte: ^5.36.2
@@ -2425,9 +2441,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^5.38.1":
-  version: 5.38.1
-  resolution: "svelte@npm:5.38.1"
+"svelte@npm:^5.38.6":
+  version: 5.38.6
+  resolution: "svelte@npm:5.38.6"
   dependencies:
     "@jridgewell/remapping": "npm:^2.3.4"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
@@ -2443,7 +2459,7 @@ __metadata:
     locate-character: "npm:^3.0.0"
     magic-string: "npm:^0.30.11"
     zimmerframe: "npm:^1.1.2"
-  checksum: 10c0/ed2a42c2c633b3371425e5584bdc20d5af0b44d6a142bd359d701e9a2beb07ffce872b28be0a3e50f38bf16e17a2ff7b9bdd69ede0c256d6a011e3dfdbde5ebc
+  checksum: 10c0/0643cc4f29de3585c4d0eb55117091d0fdbd51de0d75020db6fdf733c37a3dca3be43ee237b623c492b5cea52eecbe06dfd369f800cdbb62371827852b78df43
   languageName: node
   linkType: hard
 
@@ -2544,12 +2560,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "vite@npm:7.1.2"
+"vite@npm:^7.1.4":
+  version: 7.1.4
+  resolution: "vite@npm:7.1.4"
   dependencies:
     esbuild: "npm:^0.25.0"
-    fdir: "npm:^6.4.6"
+    fdir: "npm:^6.5.0"
     fsevents: "npm:~2.3.3"
     picomatch: "npm:^4.0.3"
     postcss: "npm:^8.5.6"
@@ -2595,7 +2611,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/4ed825b20bc0f49db99cd382de9506b2721ccd47dcebd4a68e0ef65e3cdd2347fded52b306c34178308e0fd7fe78fd5ff517623002cb00710182ad3012c92ced
+  checksum: 10c0/dbe2ba29926ffe8985c93d1b3718dcc9040080b7fa10a74c82a52aad7449136a391ba17b265288ff03b864e6f1033b9b537247521a96d5491a9d4af90ac04702
   languageName: node
   linkType: hard
 
