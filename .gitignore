@@ -1,17 +1,15 @@
 # Node modules
 node_modules/
 
-# Yarn
+
+# pnpm
+.pnpm-store/
+
+# Logs
+*.log
+logs/
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+pnpm-debug.log*
 
 # Build output
 dist/
@@ -35,10 +33,6 @@ vite.config.ts.timestamp-*
 .env.development.local
 .env.test.local
 .env.production.local
-
-# Logs
-logs/
-*.log
 
 # IDE
 .vscode/

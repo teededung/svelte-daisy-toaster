@@ -1,720 +1,678 @@
-<script>
-  import Toast from "$lib/Toast.svelte";
-  import { toast } from "$lib/toast-state.svelte.js";
+<script lang="ts">
+	import { toast } from '$lib/toast-state.svelte.js';
+	import type { ToastType, ToastStyle } from '$lib/toast-state.svelte.js';
 
-  function showDefault() {
-    toast("Default! This is a default message.");
-  }
+	function showDefault() {
+		toast('Default! This is a default message.');
+	}
 
-  function showSuccess() {
-    toast.success("Success! Operation completed successfully.");
-  }
+	function showSuccess() {
+		toast.success('Success! Operation completed successfully.');
+	}
 
-  function showError() {
-    toast.error("Error! Something went wrong.");
-  }
+	function showError() {
+		toast.error('Error! Something went wrong.');
+	}
 
-  function showWarning() {
-    toast.warning("Warning! Please check your input.");
-  }
+	function showWarning() {
+		toast.warning('Warning! Please check your input.');
+	}
 
-  function showInfo() {
-    toast.info("Info: This is an information message.");
-  }
+	function showInfo() {
+		toast.info('Info: This is an information message.');
+	}
 
-  // Loading demo
-  async function showLoadingFlow() {
-    const t = toast.loading("Loading data...", {
-      position: "top-right",
-      title: "Test loading",
-    });
+	// Loading demo
+	async function showLoadingFlow() {
+		const t = toast.loading('Loading data...', {
+			position: 'top-right',
+			title: 'Test loading'
+		});
 
-    await new Promise((r) => setTimeout(r, 1200));
-    t.update({ title: "Test loading", message: "Almost done..." });
-    await new Promise((r) => setTimeout(r, 1200));
+		// `toast.loading` is typed as possibly returning `undefined` if
+		// the toast state is not initialised yet, so guard for that to
+		// satisfy strict TypeScript checks.
+		if (!t) return;
 
-    // random success or error
-    if (Math.random() > 0.5) {
-      t.success("Done!", { durationMs: 2000, title: "Success" });
-    } else {
-      t.error("Failed", {
-        durationMs: 3000,
-        title: "Error",
-        button: {
-          text: "Retry",
-          callback: () => {
-            showLoadingFlow();
-          },
-        },
-      });
-    }
-  }
+		await new Promise((r) => setTimeout(r, 1200));
+		t.update({ title: 'Test loading', message: 'Almost done...' });
+		await new Promise((r) => setTimeout(r, 1200));
 
-  // Test position functions
-  function showToastAtPosition(position) {
-    const positionLabels = {
-      "top-left": "Top Left",
-      "top-center": "Top Center",
-      "top-right": "Top Right",
-      "middle-left": "Middle Left",
-      "center-middle": "Middle Center",
-      "middle-right": "Middle Right",
-      "bottom-left": "Bottom Left",
-      "bottom-center": "Bottom Center",
-      "bottom-right": "Bottom Right",
-    };
+		// random success or error
+		if (Math.random() > 0.5) {
+			t.success('Done!', { durationMs: 2000, title: 'Success' });
+		} else {
+			t.error('Failed', {
+				durationMs: 3000,
+				title: 'Error',
+				button: {
+					text: 'Retry',
+					callback: () => {
+						showLoadingFlow();
+					}
+				}
+			});
+		}
+	}
 
-    const types = ["info", "success", "warning", "error"];
-    const randomType = types[Math.floor(Math.random() * types.length)];
+	// Test position functions
+	function showToastAtPosition(
+		position:
+			| 'top-left'
+			| 'top-center'
+			| 'top-right'
+			| 'middle-left'
+			| 'center-middle'
+			| 'middle-right'
+			| 'bottom-left'
+			| 'bottom-center'
+			| 'bottom-right'
+	) {
+		const positionLabels: Record<typeof position, string> = {
+			'top-left': 'Top Left',
+			'top-center': 'Top Center',
+			'top-right': 'Top Right',
+			'middle-left': 'Middle Left',
+			'center-middle': 'Middle Center',
+			'middle-right': 'Middle Right',
+			'bottom-left': 'Bottom Left',
+			'bottom-center': 'Bottom Center',
+			'bottom-right': 'Bottom Right'
+		};
 
-    toast({
-      message: `${positionLabels[position]} position`,
-      type: randomType,
-      position,
-    });
-  }
+		const types: ToastType[] = ['info', 'success', 'warning', 'error'];
+		const randomType = types[Math.floor(Math.random() * types.length)];
 
-  // Test title + message functions
-  function showSuccessWithTitle() {
-    toast({
-      type: "success",
-      title: "Operation Complete",
-      message: "Your file has been uploaded successfully.",
-    });
-  }
+		toast({
+			message: `${positionLabels[position]} position`,
+			type: randomType,
+			position
+		});
+	}
 
-  function showErrorWithTitle() {
-    toast({
-      type: "error",
-      title: "Connection Failed",
-      message: "Unable to connect to the server. Please try again.",
-    });
-  }
+	// Test title + message functions
+	function showSuccessWithTitle() {
+		toast({
+			type: 'success',
+			title: 'Operation Complete',
+			message: 'Your file has been uploaded successfully.'
+		});
+	}
 
-  function showWarningWithTitle() {
-    toast({
-      type: "warning",
-      title: "Low Storage Space",
-      message: "Your device is running low on storage space.",
-    });
-  }
+	function showErrorWithTitle() {
+		toast({
+			type: 'error',
+			title: 'Connection Failed',
+			message: 'Unable to connect to the server. Please try again.'
+		});
+	}
 
-  function showInfoWithTitle() {
-    toast({
-      type: "info",
-      title: "New Update Available",
-      message: "Version 2.1.0 is now available for download.",
-    });
-  }
+	function showWarningWithTitle() {
+		toast({
+			type: 'warning',
+			title: 'Low Storage Space',
+			message: 'Your device is running low on storage space.'
+		});
+	}
 
-  // Test style functions
-  function showOutlineStyle() {
-    toast({
-      type: "success",
-      message: "Success with outline style",
-      style: "outline",
-    });
-  }
+	function showInfoWithTitle() {
+		toast({
+			type: 'info',
+			title: 'New Update Available',
+			message: 'Version 2.1.0 is now available for download.'
+		});
+	}
 
-  function showDashStyle() {
-    toast({
-      type: "warning",
-      message: "Warning with dash style",
-      style: "dash",
-    });
-  }
+	// Test style functions
+	function showOutlineStyle() {
+		toast({
+			type: 'success',
+			message: 'Success with outline style',
+			style: 'outline'
+		});
+	}
 
-  function showSoftStyle() {
-    toast({
-      type: "error",
-      message: "Error with soft style",
-      style: "soft",
-    });
-  }
+	function showDashStyle() {
+		toast({
+			type: 'warning',
+			message: 'Warning with dash style',
+			style: 'dash'
+		});
+	}
 
-  function showOutlineWithTitle() {
-    toast({
-      type: "info",
-      title: "Outline Style",
-      message: "This toast uses the outline style variant",
-      style: "outline",
-    });
-  }
+	function showSoftStyle() {
+		toast({
+			type: 'error',
+			message: 'Error with soft style',
+			style: 'soft'
+		});
+	}
 
-  function showDashWithTitle() {
-    toast({
-      type: "success",
-      title: "Dash Style",
-      message: "This toast uses the dash style variant",
-      style: "dash",
-    });
-  }
+	function showOutlineWithTitle() {
+		toast({
+			type: 'info',
+			title: 'Outline Style',
+			message: 'This toast uses the outline style variant',
+			style: 'outline'
+		});
+	}
 
-  function showSoftWithTitle() {
-    toast({
-      type: "warning",
-      title: "Soft Style",
-      message: "This toast uses the soft style variant",
-      style: "soft",
-    });
-  }
+	function showDashWithTitle() {
+		toast({
+			type: 'success',
+			title: 'Dash Style',
+			message: 'This toast uses the dash style variant',
+			style: 'dash'
+		});
+	}
 
-  // Test button functions
-  function showBasicButton() {
-    toast({
-      type: "info",
-      message: "This toast has a button!",
-      button: {
-        text: "Click me",
-        callback: (toast) => {
-          alert(`Button clicked! Toast ID: ${toast.id}`);
-        },
-      },
-    });
-  }
+	function showSoftWithTitle() {
+		toast({
+			type: 'warning',
+			title: 'Soft Style',
+			message: 'This toast uses the soft style variant',
+			style: 'soft'
+		});
+	}
 
-  function showButtonWithTitle() {
-    toast({
-      type: "success",
-      title: "Download Complete",
-      message: "Your file has been downloaded successfully.",
-      button: {
-        text: "Open Folder",
-        callback: () => {
-          alert("Opening downloads folder...");
-        },
-      },
-    });
-  }
+	// Test button functions
+	function showBasicButton() {
+		toast({
+			type: 'info',
+			message: 'This toast has a button!',
+			button: {
+				text: 'Click me',
+				callback: (toast) => {
+					alert(`Button clicked! Toast ID: ${toast.id}`);
+				}
+			}
+		});
+	}
 
-  function showButtonNoAutoClose() {
-    toast({
-      type: "warning",
-      title: "Confirm Action",
-      message: "Are you sure you want to proceed?",
-      durationMs: 10000, // 10 seconds
-      button: {
-        text: "Confirm",
-        class: "btn-warning",
-        closeOnClick: false, // Don't auto close
-        callback: (toast) => {
-          alert("Action confirmed!");
-          // Use the toast state reference from the toast object
-          setTimeout(() => {
-            toast._toastState.startRemoval(toast.id);
-          }, 1000);
-        },
-      },
-    });
-  }
+	function showButtonWithTitle() {
+		toast({
+			type: 'success',
+			title: 'Download Complete',
+			message: 'Your file has been downloaded successfully.',
+			button: {
+				text: 'Open Folder',
+				callback: () => {
+					alert('Opening downloads folder...');
+				}
+			}
+		});
+	}
 
-  function showButtonDifferentStyles() {
-    const styles = [
-      { class: "btn-primary", text: "Primary" },
-      { class: "btn-secondary", text: "Secondary" },
-      { class: "btn-accent", text: "Accent" },
-      { class: "btn-ghost", text: "Ghost" },
-    ];
+	function showButtonNoAutoClose() {
+		toast({
+			type: 'warning',
+			title: 'Confirm Action',
+			message: 'Are you sure you want to proceed?',
+			durationMs: 10000, // 10 seconds
+			button: {
+				text: 'Confirm',
+				class: 'btn-warning',
+				closeOnClick: false, // Don't auto close
+				callback: (toast) => {
+					alert('Action confirmed!');
+					// Use the toast state reference from the toast object
+					setTimeout(() => {
+						toast._toastState.startRemoval(toast.id);
+					}, 1000);
+				}
+			}
+		});
+	}
 
-    styles.forEach((style, index) => {
-      setTimeout(() => {
-        toast({
-          type: "info",
-          message: `Button with ${style.text.toLowerCase()} style`,
-          position: "top-right",
-          button: {
-            text: style.text,
-            class: style.class,
-            callback: () => {
-              alert(`${style.text} button clicked!`);
-            },
-          },
-        });
-      }, index * 500);
-    });
-  }
+	function showButtonDifferentStyles() {
+		const styles = [
+			{ class: 'btn-primary', text: 'Primary' },
+			{ class: 'btn-secondary', text: 'Secondary' },
+			{ class: 'btn-accent', text: 'Accent' },
+			{ class: 'btn-ghost', text: 'Ghost' }
+		];
 
-  function showErrorWithRetry() {
-    toast({
-      type: "error",
-      title: "Upload Failed",
-      message: "Failed to upload file. Network error occurred.",
-      durationMs: 8000,
-      button: {
-        text: "Retry",
-        class: "btn-error",
-        callback: () => {
-          // Simulate retry
-          toast.info("Retrying upload...");
-          setTimeout(() => {
-            toast.success("Upload successful!");
-          }, 2000);
-        },
-      },
-    });
-  }
+		styles.forEach((style, index) => {
+			setTimeout(() => {
+				toast({
+					type: 'info',
+					message: `Button with ${style.text.toLowerCase()} style`,
+					position: 'top-right',
+					button: {
+						text: style.text,
+						class: style.class,
+						callback: () => {
+							alert(`${style.text} button clicked!`);
+						}
+					}
+				});
+			}, index * 500);
+		});
+	}
 
-  // Test close button functions
-  function showWithCloseButton() {
-    toast({
-      type: "info",
-      message: "This toast has a close button in the corner!",
-      showCloseButton: true,
-      durationMs: 10000, // Longer duration to test close button
-    });
-  }
+	function showErrorWithRetry() {
+		toast({
+			type: 'error',
+			title: 'Upload Failed',
+			message: 'Failed to upload file. Network error occurred.',
+			durationMs: 8000,
+			button: {
+				text: 'Retry',
+				class: 'btn-error',
+				callback: () => {
+					// Simulate retry
+					toast.info('Retrying upload...');
+					setTimeout(() => {
+						toast.success('Upload successful!');
+					}, 2000);
+				}
+			}
+		});
+	}
 
-  function showCloseButtonWithTitle() {
-    toast({
-      type: "success",
-      title: "Transaction Confirmed",
-      message: "Swapping 0.2 SUI for 0.747872 USDC",
-      showCloseButton: true,
-      durationMs: 15000,
-    });
-  }
+	// Test close button functions
+	function showWithCloseButton() {
+		toast({
+			type: 'info',
+			message: 'This toast has a close button in the corner!',
+			showCloseButton: true,
+			durationMs: 10000 // Longer duration to test close button
+		});
+	}
 
-  function showCloseButtonWithActionButton() {
-    toast({
-      type: "warning",
-      title: "Confirm Action",
-      message: "Are you sure you want to proceed with this transaction?",
-      showCloseButton: true,
-      durationMs: 20000,
-      button: {
-        text: "Confirm",
-        class: "btn-warning",
-        callback: () => {
-          toast.success("Transaction confirmed!", 2000);
-        },
-      },
-    });
-  }
+	function showCloseButtonWithTitle() {
+		toast({
+			type: 'success',
+			title: 'Transaction Confirmed',
+			message: 'Swapping 0.2 SUI for 0.747872 USDC',
+			showCloseButton: true,
+			durationMs: 15000
+		});
+	}
 
-  function showCloseButtonDifferentStyles() {
-    const styles = ["outline", "dash", "soft"];
-    const types = ["info", "success", "warning", "error"];
+	function showCloseButtonWithActionButton() {
+		toast({
+			type: 'warning',
+			title: 'Confirm Action',
+			message: 'Are you sure you want to proceed with this transaction?',
+			showCloseButton: true,
+			durationMs: 20000,
+			button: {
+				text: 'Confirm',
+				class: 'btn-warning',
+				callback: () => {
+					toast.success('Transaction confirmed!', 2000);
+				}
+			}
+		});
+	}
 
-    styles.forEach((style, index) => {
-      setTimeout(() => {
-        toast({
-          type: types[index % types.length],
-          title: `${style.charAt(0).toUpperCase() + style.slice(1)} Style`,
-          message: `This toast uses ${style} style with close button`,
-          style: style,
-          showCloseButton: true,
-          durationMs: 8000,
-          position: "top-right",
-        });
-      }, index * 800);
-    });
-  }
+	function showCloseButtonDifferentStyles() {
+		const styles: ToastStyle[] = ['outline', 'dash', 'soft'];
+		const types: ToastType[] = ['info', 'success', 'warning', 'error'];
 
-  // GitHub link example
-  function showGitHubToast() {
-    toast({
-      type: "info",
-      title: "Check out our repository!",
-      message: "Visit our GitHub page for more information and updates",
-      showCloseButton: true,
-      durationMs: 5000,
-      button: {
-        text: "Open GitHub",
-        class: "btn-primary",
-        callback: () => {
-          window.open(
-            "https://github.com/teededung/svelte-daisy-toaster",
-            "_blank"
-          );
-        },
-        closeOnClick: false, // Keep toast open so user can click multiple times if needed
-      },
-    });
-  }
+		styles.forEach((style, index) => {
+			setTimeout(() => {
+				toast({
+					type: types[index % types.length],
+					title: `${style.charAt(0).toUpperCase() + style.slice(1)} Style`,
+					message: `This toast uses ${style} style with close button`,
+					style: style,
+					showCloseButton: true,
+					durationMs: 8000,
+					position: 'top-right'
+				});
+			}, index * 800);
+		});
+	}
 
-  // Test close button position examples
-  function showCloseButtonPositions() {
-    // Left positions - close button should be at top-left (-top-2 -left-2)
-    setTimeout(() => {
-      toast({
-        type: "info",
-        title: "Left Position",
-        message: "Close button at TOP-LEFT corner",
-        position: "top-left",
-        showCloseButton: true,
-        durationMs: 15000,
-      });
-    }, 0);
+	// GitHub link example
+	function showGitHubToast() {
+		toast({
+			type: 'info',
+			title: 'Check out our repository!',
+			message: 'Visit our GitHub page for more information and updates',
+			showCloseButton: true,
+			durationMs: 5000,
+			button: {
+				text: 'Open GitHub',
+				class: 'btn-primary',
+				callback: () => {
+					window.open('https://github.com/teededung/svelte-daisy-toaster', '_blank');
+				},
+				closeOnClick: false // Keep toast open so user can click multiple times if needed
+			}
+		});
+	}
 
-    setTimeout(() => {
-      toast({
-        type: "success",
-        title: "Left Position",
-        message: "Close button at TOP-LEFT corner",
-        position: "middle-left",
-        showCloseButton: true,
-        durationMs: 15000,
-      });
-    }, 500);
+	// Test close button position examples
+	function showCloseButtonPositions() {
+		// Left positions - close button should be at top-left (-top-2 -left-2)
+		setTimeout(() => {
+			toast({
+				type: 'info',
+				title: 'Left Position',
+				message: 'Close button at TOP-LEFT corner',
+				position: 'top-left',
+				showCloseButton: true,
+				durationMs: 15000
+			});
+		}, 0);
 
-    // Right positions - close button should be at top-right (-top-2 -right-2)
-    setTimeout(() => {
-      toast({
-        type: "warning",
-        title: "Right Position",
-        message: "Close button at TOP-RIGHT corner",
-        position: "top-right",
-        showCloseButton: true,
-        durationMs: 15000,
-      });
-    }, 1000);
+		setTimeout(() => {
+			toast({
+				type: 'success',
+				title: 'Left Position',
+				message: 'Close button at TOP-LEFT corner',
+				position: 'middle-left',
+				showCloseButton: true,
+				durationMs: 15000
+			});
+		}, 500);
 
-    setTimeout(() => {
-      toast({
-        type: "error",
-        title: "Right Position",
-        message: "Close button at TOP-RIGHT corner",
-        position: "middle-right",
-        showCloseButton: true,
-        durationMs: 15000,
-      });
-    }, 1500);
+		// Right positions - close button should be at top-right (-top-2 -right-2)
+		setTimeout(() => {
+			toast({
+				type: 'warning',
+				title: 'Right Position',
+				message: 'Close button at TOP-RIGHT corner',
+				position: 'top-right',
+				showCloseButton: true,
+				durationMs: 15000
+			});
+		}, 1000);
 
-    // Center positions - close button should be at top-left (-top-2 -left-2)
-    setTimeout(() => {
-      toast({
-        type: "info",
-        title: "Center Position",
-        message: "Close button at TOP-LEFT corner",
-        position: "center-middle",
-        showCloseButton: true,
-        durationMs: 15000,
-      });
-    }, 2000);
-  }
+		setTimeout(() => {
+			toast({
+				type: 'error',
+				title: 'Right Position',
+				message: 'Close button at TOP-RIGHT corner',
+				position: 'middle-right',
+				showCloseButton: true,
+				durationMs: 15000
+			});
+		}, 1500);
 
-  // Test custom class functions
-  function showBasicCustomClass() {
-    toast.success("Success with custom class!", {
-      customClass: "mt-2 bg-yellow-100",
-    });
-  }
+		// Center positions - close button should be at top-left (-top-2 -left-2)
+		setTimeout(() => {
+			toast({
+				type: 'info',
+				title: 'Center Position',
+				message: 'Close button at TOP-LEFT corner',
+				position: 'center-middle',
+				showCloseButton: true,
+				durationMs: 15000
+			});
+		}, 2000);
+	}
 
-  function showCustomClassWithTitle() {
-    toast({
-      type: "info",
-      title: "Custom Class Example",
-      message: "This toast has extra margin and padding.",
-      customClass: "m-4 p-4 border-2 border-blue-500",
-    });
-  }
+	// Test custom class functions
+	function showBasicCustomClass() {
+		toast.success('Success with custom class!', {
+			customClass: 'mt-2 bg-yellow-100'
+		});
+	}
 
-  function showCustomClassWithButton() {
-    toast({
-      type: "warning",
-      message: "Warning with custom styling and button.",
-      customClass: "rounded-xl bg-green-500",
-      button: {
-        text: "Acknowledge",
-        callback: () => {
-          alert("Acknowledged!");
-        },
-      },
-    });
-  }
+	function showCustomClassWithTitle() {
+		toast({
+			type: 'info',
+			title: 'Custom Class Example',
+			message: 'This toast has extra margin and padding.',
+			customClass: 'm-4 p-4 border-2 border-blue-500'
+		});
+	}
 
-  function showCustomClassDifferentPositions() {
-    toast({
-      type: "success",
-      message: "Top-right with custom class",
-      position: "top-right",
-      customClass: "mt-10 mr-6",
-    });
-  }
+	function showCustomClassWithButton() {
+		toast({
+			type: 'warning',
+			message: 'Warning with custom styling and button.',
+			customClass: 'rounded-xl bg-green-500',
+			button: {
+				text: 'Acknowledge',
+				callback: () => {
+					alert('Acknowledged!');
+				}
+			}
+		});
+	}
+
+	function showCustomClassDifferentPositions() {
+		toast({
+			type: 'success',
+			message: 'Top-right with custom class',
+			position: 'top-right',
+			customClass: 'mt-10 mr-6'
+		});
+	}
 </script>
 
 <svelte:head>
-  <title>Svelte Daisy Toaster - Toast Notifications Library</title>
-  <meta
-    name="description"
-    content="A beautiful and customizable toast notification library for Svelte, built with DaisyUI. Features include multiple positions, styles, buttons, and close buttons with smooth animations."
-  />
-  <meta
-    name="keywords"
-    content="svelte, toast, notifications, daisyui, library, component, ui, frontend, javascript"
-  />
-  <meta name="author" content="teededung" />
-  <meta property="og:title" content="Svelte Daisy Toaster" />
-  <meta
-    property="og:description"
-    content="Beautiful toast notifications for Svelte with DaisyUI styling"
-  />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Svelte Daisy Toaster" />
-  <meta
-    name="twitter:description"
-    content="Beautiful toast notifications for Svelte with DaisyUI styling"
-  />
+	<title>Svelte Daisy Toaster - Toast Notifications Library</title>
+	<meta
+		name="description"
+		content="A beautiful and customizable toast notification library for Svelte, built with DaisyUI. Features include multiple positions, styles, buttons, and close buttons with smooth animations."
+	/>
+	<meta
+		name="keywords"
+		content="svelte, toast, notifications, daisyui, library, component, ui, frontend, javascript"
+	/>
+	<meta name="author" content="teededung" />
+	<meta property="og:title" content="Svelte Daisy Toaster" />
+	<meta
+		property="og:description"
+		content="Beautiful toast notifications for Svelte with DaisyUI styling"
+	/>
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="Svelte Daisy Toaster" />
+	<meta
+		name="twitter:description"
+		content="Beautiful toast notifications for Svelte with DaisyUI styling"
+	/>
 </svelte:head>
 
 <div class="container mx-auto p-8">
-  <div class="flex items-center justify-between mb-8">
-    <h1 class="text-2xl font-bold">Svelte Daisy Toaster</h1>
-    <a
-      href="https://github.com/teededung/svelte-daisy-toaster"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="btn btn-outline btn-primary gap-2"
-      title="View on GitHub"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        class="w-5 h-5"
-      >
-        <path
-          d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-        />
-      </svg>
-      <span class="hidden md:inline">View on GitHub</span>
-    </a>
-  </div>
+	<div class="mb-8 flex items-center justify-between">
+		<h1 class="text-2xl font-bold">Svelte Daisy Toaster</h1>
+		<a
+			href="https://github.com/teededung/svelte-daisy-toaster"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn gap-2 btn-outline btn-primary"
+			title="View on GitHub"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+				class="h-5 w-5"
+			>
+				<path
+					d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+				/>
+			</svg>
+			<span class="hidden md:inline">View on GitHub</span>
+		</a>
+	</div>
 
-  <!-- Basic Toast Types -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Basic Toast Types</h2>
-    <div class="flex flex-wrap gap-2">
-      <button class="btn" onclick={showDefault}> Default Toast </button>
-      <button class="btn btn-success" onclick={showSuccess}>
-        Success Toast
-      </button>
-      <button class="btn btn-error" onclick={showError}> Error Toast </button>
-      <button class="btn btn-warning" onclick={showWarning}>
-        Warning Toast
-      </button>
-      <button class="btn btn-info" onclick={showInfo}> Info Toast </button>
-      <button class="btn btn-neutral" onclick={showLoadingFlow}>
-        Loading Flow
-      </button>
-    </div>
-  </section>
+	<!-- Basic Toast Types -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-2xl font-semibold">Basic Toast Types</h2>
+		<div class="flex flex-wrap gap-2">
+			<button class="btn" onclick={showDefault}> Default Toast </button>
+			<button class="btn btn-success" onclick={showSuccess}> Success Toast </button>
+			<button class="btn btn-error" onclick={showError}> Error Toast </button>
+			<button class="btn btn-warning" onclick={showWarning}> Warning Toast </button>
+			<button class="btn btn-info" onclick={showInfo}> Info Toast </button>
+			<button class="btn btn-neutral" onclick={showLoadingFlow}> Loading Flow </button>
+		</div>
+	</section>
 
-  <!-- Toast Positions -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Toast Positions</h2>
-    <div class="grid grid-cols-3 gap-2 max-w-md">
-      <!-- Top Row -->
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("top-left")}>Top Left</button
-      >
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("top-center")}>Top Center</button
-      >
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("top-right")}>Top Right</button
-      >
+	<!-- Toast Positions -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-2xl font-semibold">Toast Positions</h2>
+		<div class="grid max-w-md grid-cols-3 gap-2">
+			<!-- Top Row -->
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('top-left')}
+				>Top Left</button
+			>
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('top-center')}
+				>Top Center</button
+			>
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('top-right')}
+				>Top Right</button
+			>
 
-      <!-- Middle Row -->
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("middle-left")}>Middle Left</button
-      >
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("center-middle")}
-        >Middle Center</button
-      >
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("middle-right")}>Middle Right</button
-      >
+			<!-- Middle Row -->
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('middle-left')}
+				>Middle Left</button
+			>
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('center-middle')}
+				>Middle Center</button
+			>
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('middle-right')}
+				>Middle Right</button
+			>
 
-      <!-- Bottom Row -->
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("bottom-left")}>Bottom Left</button
-      >
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("bottom-center")}
-        >Bottom Center</button
-      >
-      <button
-        class="btn btn-outline btn-sm"
-        onclick={() => showToastAtPosition("bottom-right")}>Bottom Right</button
-      >
-    </div>
-  </section>
+			<!-- Bottom Row -->
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('bottom-left')}
+				>Bottom Left</button
+			>
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('bottom-center')}
+				>Bottom Center</button
+			>
+			<button class="btn btn-outline btn-sm" onclick={() => showToastAtPosition('bottom-right')}
+				>Bottom Right</button
+			>
+		</div>
+	</section>
 
-  <!-- Toast with Title + Message -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Toast with Title + Message</h2>
-    <div class="flex flex-wrap gap-2">
-      <button class="btn btn-success" onclick={showSuccessWithTitle}
-        >Success with Title</button
-      >
-      <button class="btn btn-error" onclick={showErrorWithTitle}
-        >Error with Title</button
-      >
-      <button class="btn btn-warning" onclick={showWarningWithTitle}
-        >Warning with Title</button
-      >
-      <button class="btn btn-info" onclick={showInfoWithTitle}
-        >Info with Title</button
-      >
-    </div>
-  </section>
+	<!-- Toast with Title + Message -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-2xl font-semibold">Toast with Title + Message</h2>
+		<div class="flex flex-wrap gap-2">
+			<button class="btn btn-success" onclick={showSuccessWithTitle}>Success with Title</button>
+			<button class="btn btn-error" onclick={showErrorWithTitle}>Error with Title</button>
+			<button class="btn btn-warning" onclick={showWarningWithTitle}>Warning with Title</button>
+			<button class="btn btn-info" onclick={showInfoWithTitle}>Info with Title</button>
+		</div>
+	</section>
 
-  <!-- Toast Styles -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Toast Styles</h2>
-    <div class="space-y-4">
-      <div>
-        <h3 class="text-lg font-medium mb-2">Basic Styles</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-success btn-outline" onclick={showOutlineStyle}
-            >Outline Style</button
-          >
-          <button class="btn btn-warning btn-dash" onclick={showDashStyle}
-            >Dash Style</button
-          >
-          <button class="btn btn-error btn-soft" onclick={showSoftStyle}
-            >Soft Style</button
-          >
-        </div>
-      </div>
-      <div>
-        <h3 class="text-lg font-medium mb-2">Styles with Title</h3>
-        <div class="flex flex-wrap gap-2">
-          <button
-            class="btn btn-info btn-outline"
-            onclick={showOutlineWithTitle}>Outline + Title</button
-          >
-          <button class="btn btn-success btn-dash" onclick={showDashWithTitle}
-            >Dash + Title</button
-          >
-          <button class="btn btn-warning btn-soft" onclick={showSoftWithTitle}
-            >Soft + Title</button
-          >
-        </div>
-      </div>
-    </div>
-  </section>
+	<!-- Toast Styles -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-2xl font-semibold">Toast Styles</h2>
+		<div class="space-y-4">
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Basic Styles</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-outline btn-success" onclick={showOutlineStyle}
+						>Outline Style</button
+					>
+					<button class="btn btn-dash btn-warning" onclick={showDashStyle}>Dash Style</button>
+					<button class="btn btn-soft btn-error" onclick={showSoftStyle}>Soft Style</button>
+				</div>
+			</div>
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Styles with Title</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-outline btn-info" onclick={showOutlineWithTitle}
+						>Outline + Title</button
+					>
+					<button class="btn btn-dash btn-success" onclick={showDashWithTitle}>Dash + Title</button>
+					<button class="btn btn-soft btn-warning" onclick={showSoftWithTitle}>Soft + Title</button>
+				</div>
+			</div>
+		</div>
+	</section>
 
-  <!-- Button Toast Examples -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Button Toast Examples</h2>
-    <div class="space-y-4">
-      <div>
-        <h3 class="text-lg font-medium mb-2">Basic Button Usage</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-info" onclick={showBasicButton}>
-            Basic Button
-          </button>
-          <button class="btn btn-success" onclick={showButtonWithTitle}>
-            Button with Title
-          </button>
-          <button class="btn btn-warning" onclick={showButtonNoAutoClose}>
-            No Auto Close
-          </button>
-        </div>
-      </div>
-      <div>
-        <h3 class="text-lg font-medium mb-2">Button Styles</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-neutral" onclick={showButtonDifferentStyles}>
-            Different Button Styles
-          </button>
-          <button class="btn btn-error" onclick={showErrorWithRetry}>
-            Error with Retry
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+	<!-- Button Toast Examples -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-2xl font-semibold">Button Toast Examples</h2>
+		<div class="space-y-4">
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Basic Button Usage</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-info" onclick={showBasicButton}> Basic Button </button>
+					<button class="btn btn-success" onclick={showButtonWithTitle}> Button with Title </button>
+					<button class="btn btn-warning" onclick={showButtonNoAutoClose}> No Auto Close </button>
+				</div>
+			</div>
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Button Styles</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-neutral" onclick={showButtonDifferentStyles}>
+						Different Button Styles
+					</button>
+					<button class="btn btn-error" onclick={showErrorWithRetry}> Error with Retry </button>
+				</div>
+			</div>
+		</div>
+	</section>
 
-  <!-- Close Button Examples -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Close Button Examples</h2>
-    <div class="space-y-4">
-      <div>
-        <h3 class="text-lg font-medium mb-2">Basic Close Button</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-info" onclick={showWithCloseButton}>
-            Simple Close Button
-          </button>
-          <button class="btn btn-success" onclick={showCloseButtonWithTitle}>
-            Close Button with Title
-          </button>
-        </div>
-      </div>
-      <div>
-        <h3 class="text-lg font-medium mb-2">Close Button + Action Button</h3>
-        <div class="flex flex-wrap gap-2">
-          <button
-            class="btn btn-warning"
-            onclick={showCloseButtonWithActionButton}
-          >
-            Both Close & Action Button
-          </button>
-          <button
-            class="btn btn-neutral"
-            onclick={showCloseButtonDifferentStyles}
-          >
-            Close Button + Different Styles
-          </button>
-          <button class="btn btn-primary" onclick={showGitHubToast}>
-            Open GitHub Link
-          </button>
-        </div>
-      </div>
-      <div>
-        <h3 class="text-lg font-medium mb-2">Close Button Positioning</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-accent" onclick={showCloseButtonPositions}>
-            Test Left vs Right Positioning
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+	<!-- Close Button Examples -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-2xl font-semibold">Close Button Examples</h2>
+		<div class="space-y-4">
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Basic Close Button</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-info" onclick={showWithCloseButton}> Simple Close Button </button>
+					<button class="btn btn-success" onclick={showCloseButtonWithTitle}>
+						Close Button with Title
+					</button>
+				</div>
+			</div>
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Close Button + Action Button</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-warning" onclick={showCloseButtonWithActionButton}>
+						Both Close & Action Button
+					</button>
+					<button class="btn btn-neutral" onclick={showCloseButtonDifferentStyles}>
+						Close Button + Different Styles
+					</button>
+					<button class="btn btn-primary" onclick={showGitHubToast}> Open GitHub Link </button>
+				</div>
+			</div>
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Close Button Positioning</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-accent" onclick={showCloseButtonPositions}>
+						Test Left vs Right Positioning
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
 
-  <!-- Custom Class Examples -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Custom Class Examples</h2>
-    <div class="space-y-4">
-      <div>
-        <h3 class="text-lg font-medium mb-2">Basic Custom Class</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-success" onclick={showBasicCustomClass}>
-            Basic Custom Class
-          </button>
-          <button class="btn btn-info" onclick={showCustomClassWithTitle}>
-            Custom Class with Title
-          </button>
-        </div>
-      </div>
-      <div>
-        <h3 class="text-lg font-medium mb-2">Advanced Custom Class</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-warning" onclick={showCustomClassWithButton}>
-            Custom Class: rounded-xl bg-green-500
-          </button>
-          <button
-            class="btn btn-neutral"
-            onclick={showCustomClassDifferentPositions}
-          >
-            Custom Class: mt-10 mr-6
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+	<!-- Custom Class Examples -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-2xl font-semibold">Custom Class Examples</h2>
+		<div class="space-y-4">
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Basic Custom Class</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-success" onclick={showBasicCustomClass}>
+						Basic Custom Class
+					</button>
+					<button class="btn btn-info" onclick={showCustomClassWithTitle}>
+						Custom Class with Title
+					</button>
+				</div>
+			</div>
+			<div>
+				<h3 class="mb-2 text-lg font-medium">Advanced Custom Class</h3>
+				<div class="flex flex-wrap gap-2">
+					<button class="btn btn-warning" onclick={showCustomClassWithButton}>
+						Custom Class: rounded-xl bg-green-500
+					</button>
+					<button class="btn btn-neutral" onclick={showCustomClassDifferentPositions}>
+						Custom Class: mt-10 mr-6
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>

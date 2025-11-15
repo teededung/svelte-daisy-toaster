@@ -7,6 +7,7 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 - Easy to use toast notifications
 - Supports info, success, warning, and error types
 - Optional title for structured alerts
+- First-class TypeScript typings and autocomplete
 - Customizable duration
 - Animated icons and transitions
 - Built with Svelte 5 runes
@@ -23,7 +24,7 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 `svelte-daisy-toaster` ships without any CSS bundled. The host project **must** have TailwindCSS (v4 or later) and DaisyUI installed. Add them as dev-dependencies:
 
 ```bash
-yarn add -D tailwindcss@^4.1 daisyui@^5
+pnpm add -D tailwindcss@^4.1 daisyui@^5
 ```
 
 ---
@@ -38,7 +39,7 @@ Create (or open) the stylesheet that Tailwind will compile, e.g. `src/app.css`, 
 
 ```css
 /* src/app.css */
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui"; /* Load DaisyUI plugin */
 
 /* Tell Tailwind to scan toaster components for classes */
@@ -54,7 +55,7 @@ If you prefer the classic `tailwind.config.js` file, note that Tailwind v4 no lo
 ```css
 /* src/app.css */
 @config "../tailwind.config.js"; /* path is relative to this CSS file */
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 ```
 
@@ -63,15 +64,15 @@ If you prefer the classic `tailwind.config.js` file, note that Tailwind v4 no lo
 ```js
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./src/**/*.{html,js,svelte,ts}",
-    "./node_modules/svelte-daisy-toaster/dist/**/*.{js,svelte}",
-  ],
-  plugins: [require("daisyui")],
+	content: [
+		'./src/**/*.{html,js,svelte,ts}',
+		'./node_modules/svelte-daisy-toaster/dist/**/*.{js,svelte}'
+	],
+	plugins: [require('daisyui')]
 };
 ```
 
-Start the dev server (`yarn dev`). After the first build, the DaisyUI `alert` utilities used by `svelte-daisy-toaster` will have full styling.
+Start the dev server (`pnpm dev`). After the first build, the DaisyUI `alert` utilities used by `svelte-daisy-toaster` will have full styling.
 
 ---
 
@@ -83,10 +84,10 @@ If publishing to npm:
 npm install svelte-daisy-toaster
 ```
 
-Or with yarn:
+Or with pnpm:
 
 ```bash
-yarn add svelte-daisy-toaster
+pnpm add svelte-daisy-toaster
 ```
 
 ## Usage
@@ -96,11 +97,11 @@ yarn add svelte-daisy-toaster
 In your root layout or app component:
 
 ```svelte
-<script>
-  import { setToastState } from 'svelte-daisy-toaster';
-  import { Toaster } from 'svelte-daisy-toaster';
+<script lang="ts">
+	import { setToastState } from 'svelte-daisy-toaster';
+	import { Toaster } from 'svelte-daisy-toaster';
 
-  setToastState();
+	setToastState();
 </script>
 
 <Toaster />
@@ -111,16 +112,16 @@ In your root layout or app component:
 Anywhere in your components:
 
 ```svelte
-<script>
-  import { toast } from 'svelte-daisy-toaster';
+<script lang="ts">
+	import { toast } from 'svelte-daisy-toaster';
 
-  function showSuccessToast() {
-    toast.success('Operation successful!', 3000);
-  }
+	function showSuccessToast() {
+		toast.success('Operation successful!', 3000);
+	}
 
-  function showDefaultToast() {
-    toast('Simple notification');
-  }
+	function showDefaultToast() {
+		toast('Simple notification');
+	}
 </script>
 
 <button onclick={showSuccessToast}>Show Success Toast</button>
@@ -178,6 +179,21 @@ Shortcuts (flexible signatures):
 - `getToastState()`: Get current toast state
 - `ToastState` class: For custom implementations
 
+### TypeScript support
+
+The library ships with rich `.d.ts` typings so you get autocomplete and strict checking out of the box:
+
+- **Core types**:
+  - `ToastType`: `'default' | 'info' | 'success' | 'warning' | 'error' | 'loading'`
+  - `ToastStyle`: `'outline' | 'dash' | 'soft'`
+  - `ToastButton`: `{ text?: string; class?: string; callback?: (toast) => void; closeOnClick?: boolean }`
+  - `ToastOptions`: full options object for `toast(...)`
+- **State & helpers**:
+  - `ToastState` class with `add`, `update`, `startRemoval`, `remove`
+  - `toast.loading(...)` returns a typed controller with `success`, `error`, `info`, `warning`, `update`, `dismiss`
+- **Overloads**:
+  - `toast` and `toast.info/success/warning/error` are overloaded to support both legacy positional params and the object format, with proper TypeScript signatures.
+
 ## Examples
 
 ### Loading Toasts
@@ -186,17 +202,17 @@ Show a persistent loading toast and then resolve it to success (or error):
 
 ```svelte
 <script>
-  import { toast } from 'svelte-daisy-toaster';
+	import { toast } from 'svelte-daisy-toaster';
 
-  async function runTask() {
-    const t = toast.loading('Uploading file...'); // persistent (no auto-dismiss)
-    try {
-      await new Promise((r) => setTimeout(r, 1500));
-      t.success('Upload complete', { durationMs: 2000, title: 'Success' });
-    } catch (e) {
-      t.error('Upload failed', { durationMs: 3000, title: 'Error' });
-    }
-  }
+	async function runTask() {
+		const t = toast.loading('Uploading file...'); // persistent (no auto-dismiss)
+		try {
+			await new Promise((r) => setTimeout(r, 1500));
+			t.success('Upload complete', { durationMs: 2000, title: 'Success' });
+		} catch (e) {
+			t.error('Upload failed', { durationMs: 3000, title: 'Error' });
+		}
+	}
 </script>
 
 <button onclick={runTask}>Run async task</button>
@@ -205,9 +221,9 @@ Show a persistent loading toast and then resolve it to success (or error):
 You can also update or dismiss manually:
 
 ```js
-const t = toast.loading("Processing...", { position: "bottom-center" });
+const t = toast.loading('Processing...', { position: 'bottom-center' });
 // later
-t.update({ message: "Almost done..." });
+t.update({ message: 'Almost done...' });
 // or
 t.dismiss();
 ```
@@ -223,25 +239,25 @@ toast('Simple notification message');
 Using shortcuts with options object:
 
 ```js
-toast.success("Saved!", {
-  durationMs: 2000,
-  position: "top-right",
-  title: "Success",
-  style: "soft",
-  showCloseButton: true,
+toast.success('Saved!', {
+	durationMs: 2000,
+	position: 'top-right',
+	title: 'Success',
+	style: 'soft',
+	showCloseButton: true
 });
 // Or pass full options as first argument
 toast.error({
-  message: "Failed to save",
-  position: "bottom-center",
-  title: "Error",
-  button: {
-    text: "Retry",
-    class: "btn-error",
-    callback: () => {
-      /* ... */
-    },
-  },
+	message: 'Failed to save',
+	position: 'bottom-center',
+	title: 'Error',
+	button: {
+		text: 'Retry',
+		class: 'btn-error',
+		callback: () => {
+			/* ... */
+		}
+	}
 });
 ```
 
@@ -319,25 +335,14 @@ The library supports 9 different positions in a 3x3 grid layout. You can use sho
 **Position examples:**
 
 ```svelte
-// Top positions
-toast.info('Top left notification', 3000, 'top-left');
-toast.success('Top center notification', 3000, 'top-center');
-toast.warning('Top right notification', 3000, 'top-right');
-
-// Middle positions
-toast.info('Left side notification', 3000, 'middle-left');
-toast.success('Center notification', 3000, 'center-middle');
-toast.warning('Right side notification', 3000, 'right-middle');
-
-// Bottom positions
-toast.error('Bottom left', 3000, 'bottom-left');
-toast.success('Bottom center', 3000, 'bottom-center');
-toast.info('Bottom right', 3000, 'bottom-right');
-
-// Flexible order - both work the same
-toast.error('Bottom center', 3000, 'center-bottom'); // Same as 'bottom-center'
-
-// You can also use DaisyUI classes directly
+// Top positions toast.info('Top left notification', 3000, 'top-left'); toast.success('Top center
+notification', 3000, 'top-center'); toast.warning('Top right notification', 3000, 'top-right'); //
+Middle positions toast.info('Left side notification', 3000, 'middle-left'); toast.success('Center
+notification', 3000, 'center-middle'); toast.warning('Right side notification', 3000,
+'right-middle'); // Bottom positions toast.error('Bottom left', 3000, 'bottom-left');
+toast.success('Bottom center', 3000, 'bottom-center'); toast.info('Bottom right', 3000,
+'bottom-right'); // Flexible order - both work the same toast.error('Bottom center', 3000,
+'center-bottom'); // Same as 'bottom-center' // You can also use DaisyUI classes directly
 toast.info('Direct DaisyUI', 3000, 'toast-middle toast-start');
 ```
 
