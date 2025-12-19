@@ -6,17 +6,18 @@
 	let {
 		toast,
 		isAnimate = true,
-		position = 'top-right'
+		position = 'top-right',
+		isBlur = false
 	} = $props<{
 		toast: ToastType;
 		isAnimate?: boolean;
 		position?: string;
+		isBlur?: boolean;
 	}>();
 
 	const toastState = getToastState() as ToastState;
 	let alertRef = $state<HTMLDivElement | null>(null);
 	let isAnimated = $state(false);
-	let visible = $state(toast.visible ?? true);
 
 	$effect(() => {
 		if (isAnimate) {
@@ -24,15 +25,11 @@
 		}
 	});
 
-	// Watch for changes in toast.visible from the toast state
-	$effect(() => {
-		visible = toast.visible ?? true;
-	});
-
-	// Watch for changes in toast.visible from the toast state
+	// Watch for changes in dimensions
 	$effect(() => {
 		if (alertRef) {
 			toastState.widths[toast.id] = alertRef.clientWidth;
+			toastState.heights[toast.id] = alertRef.offsetHeight;
 		}
 	});
 
@@ -46,9 +43,9 @@
 
 		// Determine horizontal direction
 		if (horizontal === 'right' || horizontal === 'end') {
-			x = 100; // Exit to right
+			x = 500; // Exit to right
 		} else if (horizontal === 'left' || horizontal === 'start') {
-			x = -100; // Exit to left
+			x = -500; // Exit to left
 		}
 
 		// Determine vertical direction for center positions
@@ -63,18 +60,18 @@
 			}
 		}
 
-		return { x, y, duration: 300 };
+		return { x, y, duration: 600, opacity: 1 };
 	}
 
 	const exitAnimation = getExitAnimation();
 </script>
 
-{#if visible}
+{#if toast.visible}
 	<div
 		bind:this={alertRef}
-		in:fly={{ x: -exitAnimation.x, y: -exitAnimation.y, duration: 300 }}
+		in:fly={{ x: -exitAnimation.x, y: -exitAnimation.y, duration: 600, opacity: 1 }}
 		out:fly={exitAnimation}
-		class="{toast.customClass ?? ''} relative alert flex items-center gap-2"
+		class="{toast.customClass ?? ''} relative alert flex items-center gap-2 shadow-lg"
 		class:sm:alert-horizontal={toast.title}
 		class:alert-info={toast.type === 'info'}
 		class:alert-success={toast.type === 'success'}
@@ -83,7 +80,10 @@
 		class:alert-outline={toast.style === 'outline'}
 		class:alert-dash={toast.style === 'dash'}
 		class:alert-soft={toast.style === 'soft'}
+		class:alert-blur={isBlur && (toast.style === 'outline' || toast.style === 'dash')}
 		role="alert"
+		onmouseenter={() => toastState.pause(toast.id)}
+		onmouseleave={() => toastState.resume(toast.id)}
 	>
 		{#if toast.showCloseButton}
 			<button
@@ -338,4 +338,23 @@
 			stroke-dashoffset: 0;
 		}
 	}
+
+	/* Add smooth transition for style changes */
+	.alert {
+		transition-property: background-color, backdrop-filter, border-color, color;
+		transition-duration: 0.4s;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.alert-blur {
+		background-color: var(--fallback-b1, oklch(var(--b1) / 0.9)) !important;
+		backdrop-filter: blur(8px);
+		border-width: 1px;
+	}
+
+	/* Ensure border colors are explicit for outline/dash styles */
+	.alert-blur.alert-success { border-color: oklch(var(--su) / 0.5); }
+	.alert-blur.alert-error { border-color: oklch(var(--er) / 0.5); }
+	.alert-blur.alert-warning { border-color: oklch(var(--wa) / 0.5); }
+	.alert-blur.alert-info { border-color: oklch(var(--in) / 0.5); }
 </style>
