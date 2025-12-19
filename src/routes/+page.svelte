@@ -2,6 +2,7 @@
 	import { Toaster, toast } from '$lib/index.js';
 	import { toasterConfig } from './config.svelte.js';
 	import CodeBlock from '$lib/components/CodeBlock.svelte';
+	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 
 	function showDefault() {
 		toast('This is a default toast notification');
@@ -47,6 +48,7 @@
 
 	function showWithButton() {
 		toast('Message deleted', {
+			durationMs: 60000,
 			button: {
 				text: 'Undo',
 				class: 'btn-ghost btn-xs text-primary',
@@ -115,6 +117,7 @@
 	<div class="mb-8 flex items-center justify-between">
 		<h1 class="text-2xl font-bold">Svelte Daisy Toaster</h1>
 		<div class="flex gap-4 items-center">
+			<ThemeSwitcher />
 			<div class="tooltip tooltip-bottom" data-tip="Click to support me with a star! ⭐">
 				<a
 					href="https://github.com/teededung/svelte-daisy-toaster"
