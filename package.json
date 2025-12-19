@@ -1,6 +1,6 @@
 {
 	"name": "svelte-daisy-toaster",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"description": "Svelte DaisyUI Toast Component",
 	"keywords": [
 		"daisyui",
