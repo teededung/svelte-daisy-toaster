@@ -3,6 +3,7 @@
   import favicon from "$lib/assets/favicon.svg";
   import { setToastState } from "$lib/toast-state.svelte.js";
   import Toaster from "$lib/Toaster.svelte";
+  import { toasterConfig } from "./config.svelte.js";
 
   setToastState();
 
@@ -15,4 +16,7 @@
 
 {@render children()}
 
-<Toaster />
+<Toaster 
+  stack={toasterConfig.stack} 
+  gap={toasterConfig.gap} 
+/>

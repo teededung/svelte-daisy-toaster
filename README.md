@@ -12,6 +12,7 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 - Animated icons and transitions
 - Built with Svelte 5 runes
 - Styled with DaisyUI and Tailwind CSS
+- Stacked Notifications: Cleanly stack multiple toasts with a depth effect
 
 ## Requirements
 
@@ -170,7 +171,10 @@ Shortcuts (flexible signatures):
 
 ### Components
 
-- `<Toaster />`: Renders all toasts (place once in app)
+- `<Toaster />`: Renders all toasts (place once in app).
+  - `stack`: boolean (default: false) - Enable `sonner`-like stacking effect. Toasts will stack with depth and expand on hover.
+  - `gap`: number (default: 14) - The gap between toasts when stacked (collapsed).
+  - `zIndex`: number (default: 50) - The z-index of the toaster container.
 - `<Toast toast={{id, type, message, title?}} isAnimate={true} />`: Individual toast (usually not needed directly). The `isAnimate` prop (default: true) controls whether the icon animation is enabled.
 
 ### State Management
@@ -236,6 +240,20 @@ Default style toast (default color, just `alert` class):
 toast('Simple notification message');
 ```
 
+### Stacked Toasts
+
+Enable the stacking effect in your root layout:
+
+```svelte
+<script lang="ts">
+  import { Toaster, setToastState } from 'svelte-daisy-toaster';
+  setToastState();
+</script>
+
+<!-- Toasts will now stack with a depth effect and expand on hover -->
+<Toaster stack={true} />
+```
+
 Using shortcuts with options object:
 
 ```js
@@ -265,9 +283,9 @@ Toast with title (structured layout):
 
 ```svelte
 toast({
+  type: 'info',
   title: 'New message!',
   message: 'You have 1 unread message',
-  type: 'info'
 });
 ```
 
