@@ -25,12 +25,31 @@
 		}
 	});
 
-	// Watch for changes in dimensions
+	// Keep dimensions up-to-date (used by stacked mode positioning)
 	$effect(() => {
-		if (alertRef) {
-			toastState.widths[toast.id] = alertRef.clientWidth;
-			toastState.heights[toast.id] = alertRef.offsetHeight;
+		if (!alertRef) return;
+
+		const el = alertRef;
+
+		const update = () => {
+			toastState.widths[toast.id] = el.clientWidth;
+			toastState.heights[toast.id] = el.offsetHeight;
+		};
+
+		update();
+
+		// Some environments (SSR) or very old browsers may not have ResizeObserver.
+		// In those cases, we at least re-measure once on the next frame.
+		if (typeof ResizeObserver === 'undefined') {
+			if (typeof requestAnimationFrame !== 'undefined') {
+				requestAnimationFrame(update);
+			}
+			return;
 		}
+
+		const ro = new ResizeObserver(() => update());
+		ro.observe(el);
+		return () => ro.disconnect();
 	});
 
 	// Calculate exit animation based on position

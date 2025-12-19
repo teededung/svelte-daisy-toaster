@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Toaster, toast } from '$lib/index.js';
+	import { toast } from '$lib/index.js';
 	import { toasterConfig } from './config.svelte.js';
 	import CodeBlock from '$lib/components/CodeBlock.svelte';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
@@ -534,5 +534,3 @@ t.dismiss();`}
 		</div>
 	</section>
 </div>
-
-<Toaster stack={toasterConfig.stack} />
