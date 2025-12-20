@@ -6,7 +6,6 @@ export type ToastButton = {
 	text?: string;
 	class?: string;
 	callback?: (toast: Toast) => void;
-	closeOnClick?: boolean;
 };
 
 export type ToastOptions = {

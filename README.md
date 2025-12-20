@@ -147,7 +147,6 @@ Anywhere in your components:
     - `text`: string (default: 'OK') - Button text
     - `class`: string (optional) - Additional CSS classes for the button (e.g., 'btn-primary')
     - `callback`: function (optional) - Function called when button is clicked, receives toast object
-    - `closeOnClick`: boolean (default: true) - Whether to automatically close the toast after button click
 
 **String format (default style):**
 
@@ -190,7 +189,7 @@ The library ships with rich `.d.ts` typings so you get autocomplete and strict c
 - **Core types**:
   - `ToastType`: `'default' | 'info' | 'success' | 'warning' | 'error' | 'loading'`
   - `ToastStyle`: `'outline' | 'dash' | 'soft'`
-  - `ToastButton`: `{ text?: string; class?: string; callback?: (toast) => void; closeOnClick?: boolean }`
+  - `ToastButton`: `{ text?: string; class?: string; callback?: (toast) => void; }`
   - `ToastOptions`: full options object for `toast(...)`
 - **State & helpers**:
   - `ToastState` class with `add`, `update`, `startRemoval`, `remove`
@@ -315,8 +314,7 @@ toast({
     callback: (toast) => {
       console.log('Button clicked for toast:', toast.id);
       // Custom logic here
-    },
-    closeOnClick: false  // Keep toast open after click
+    }
   }
 });
 ```

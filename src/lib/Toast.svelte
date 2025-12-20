@@ -234,12 +234,11 @@
 				<button
 					class="btn whitespace-nowrap btn-xs {toast.button.class || 'btn-outline'}"
 					onclick={() => {
-						if (toast.button.callback) {
-							toast.button.callback(toast);
+						const button = toast.button;
+						if (button && button.callback) {
+							button.callback(toast);
 						}
-						if (toast.button.closeOnClick !== false) {
-							toastState.startRemoval(toast.id);
-						}
+						toastState.startRemoval(toast.id);
 					}}
 				>
 					{toast.button.text || 'OK'}

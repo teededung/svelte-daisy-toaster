@@ -113,17 +113,19 @@
 	/>
 </svelte:head>
 
-<div class="container mx-auto p-8">
-	<div class="mb-8 flex items-center justify-between">
-		<h1 class="text-2xl font-bold">Svelte Daisy Toaster</h1>
-		<div class="flex gap-4 items-center">
+<div class="container mx-auto px-4 py-6 md:px-8 md:py-12 max-w-4xl w-full">
+	<div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+		<h1 class="text-2xl md:text-3xl font-bold text-primary text-center sm:text-left break-words">
+			Svelte Daisy Toaster
+		</h1>
+		<div class="flex gap-2 items-center justify-center sm:justify-end">
 			<ThemeSwitcher />
-			<div class="tooltip tooltip-bottom" data-tip="Click to support me with a star! ⭐">
+			<div class="tooltip tooltip-bottom sm:tooltip-left" data-tip="Click to support me with a star! ⭐">
 				<a
 					href="https://github.com/teededung/svelte-daisy-toaster"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="btn gap-2 btn-outline btn-primary shadow-sm hover:shadow-md transition-all h-10 min-h-[auto]"
+					class="btn gap-2 btn-outline btn-primary shadow-sm hover:shadow-md transition-all h-10 min-h-[auto] px-3 md:px-4"
 					title="Star this project on GitHub"
 				>
 					<svg
@@ -138,7 +140,7 @@
 							d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
 						/>
 					</svg>
-					<span class="hidden md:inline">Give me a Star ⭐</span>
+					<span class="hidden sm:inline lg:hidden xl:inline text-xs md:text-sm">Give me a Star ⭐</span>
 				</a>
 			</div>
 		</div>
@@ -193,17 +195,20 @@ toast.success('Hello World!');`}
 
 	<!-- Stack Mode -->
 	<section class="mb-12">
-		<h2 class="mb-4 text-2xl font-semibold">Stack Mode</h2>
+		<h2 class="mb-4 text-xl md:text-2xl font-semibold flex items-center gap-2">
+			<span class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-sm">01</span>
+			Stack Mode
+		</h2>
 		<CodeBlock
 			code={`<!-- Add 'stack' prop to your Toaster component -->
 <Toaster stack={true} />`}
 		/>
-		<div class="form-control w-fit">
-			<label class="label cursor-pointer gap-2">
-				<span class="label-text font-bold text-lg text-primary">Enable Stack Mode</span>
+		<div class="form-control w-fit bg-base-200/50 p-3 rounded-xl border border-base-300">
+			<label class="label cursor-pointer gap-4">
+				<span class="label-text font-bold text-base md:text-lg text-primary">Enable Stack Mode</span>
 				<input
 					type="checkbox"
-					class="checkbox checkbox-primary checkbox-md"
+					class="toggle toggle-primary"
 					bind:checked={toasterConfig.stack}
 				/>
 			</label>
@@ -211,8 +216,11 @@ toast.success('Hello World!');`}
 	</section>
 
 	<!-- Basic Toast Types -->
-	<section class="mb-8">
-		<h2 class="mb-4 text-2xl font-semibold">Basic Toast Types</h2>
+	<section class="mb-12">
+		<h2 class="mb-4 text-xl md:text-2xl font-semibold flex items-center gap-2">
+			<span class="w-8 h-8 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center text-sm">02</span>
+			Basic Toast Types
+		</h2>
 		<CodeBlock
 			code={`// Simple usage
 toast('Default message');
@@ -231,51 +239,60 @@ const t = toast.loading('Loading...');
 // ... do work ...
 t.success('Done!');`}
 		/>
-		<div class="flex flex-wrap gap-2">
-			<button class="btn" onclick={showDefault}> Default Toast </button>
-			<button class="btn btn-success" onclick={showSuccess}> Success Toast </button>
-			<button class="btn btn-error" onclick={showError}> Error Toast </button>
-			<button class="btn btn-warning" onclick={showWarning}> Warning Toast </button>
-			<button class="btn btn-info" onclick={showInfo}> Info Toast </button>
-			<button class="btn btn-neutral" onclick={showLoadingFlow}> Loading Flow </button>
+		<div class="grid grid-cols-2 min-[450px]:grid-cols-3 sm:flex sm:flex-wrap gap-2 md:gap-3">
+			<button class="btn btn-sm md:btn-md" onclick={showDefault}> Default </button>
+			<button class="btn btn-sm md:btn-md btn-success" onclick={showSuccess}> Success </button>
+			<button class="btn btn-sm md:btn-md btn-error" onclick={showError}> Error </button>
+			<button class="btn btn-sm md:btn-md btn-warning" onclick={showWarning}> Warning </button>
+			<button class="btn btn-sm md:btn-md btn-info" onclick={showInfo}> Info </button>
+			<button class="btn btn-sm md:btn-md btn-neutral" onclick={showLoadingFlow}> Loading </button>
 		</div>
 	</section>
 
 	<!-- Toast Positions -->
-	<section class="mb-8">
-		<h2 class="mb-4 text-2xl font-semibold">Toast Positions</h2>
+	<section class="mb-12">
+		<h2 class="mb-4 text-xl md:text-2xl font-semibold flex items-center gap-2">
+			<span class="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center text-sm">03</span>
+			Toast Positions
+		</h2>
 		<CodeBlock
 			code={`toast('Top Center', { position: 'top-center' });
 toast('Bottom Center', { position: 'bottom-center' });`}
 		/>
-		<div class="flex flex-wrap gap-2">
-			<button class="btn btn-outline" onclick={showTopLeft}> Top Left </button>
-			<button class="btn btn-outline" onclick={showTopCenter}> Top Center </button>
-			<button class="btn btn-outline" onclick={() => toast('Top Right')}> Top Right </button>
-			<button class="btn btn-outline" onclick={showBottomLeft}> Bottom Left </button>
-			<button class="btn btn-outline" onclick={showBottomCenter}> Bottom Center </button>
-			<button class="btn btn-outline" onclick={showBottomRight}> Bottom Right </button>
+		<div class="grid grid-cols-2 min-[450px]:grid-cols-3 sm:flex sm:flex-wrap gap-2 md:gap-3">
+			<button class="btn btn-sm md:btn-md btn-outline" onclick={showTopLeft}> Top Left </button>
+			<button class="btn btn-sm md:btn-md btn-outline" onclick={showTopCenter}> Top Center </button>
+			<button class="btn btn-sm md:btn-md btn-outline" onclick={() => toast('Top Right')}> Top Right </button>
+			<button class="btn btn-sm md:btn-md btn-outline" onclick={showBottomLeft}> Bottom Left </button>
+			<button class="btn btn-sm md:btn-md btn-outline" onclick={showBottomCenter}> Bottom Center </button>
+			<button class="btn btn-sm md:btn-md btn-outline" onclick={showBottomRight}> Bottom Right </button>
 		</div>
 	</section>
 
 	<!-- Toast Styles -->
-	<section class="mb-8">
-		<h2 class="mb-4 text-2xl font-semibold">Toast Styles</h2>
+	<section class="mb-12">
+		<h2 class="mb-4 text-xl md:text-2xl font-semibold flex items-center gap-2">
+			<span class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-sm">04</span>
+			Toast Styles
+		</h2>
 		<CodeBlock
 			code={`toast.success('Outline style', { style: 'outline' });
 toast.warning('Dash style', { style: 'dash' });
 toast.info('Soft style', { style: 'soft' });`}
 		/>
-		<div class="flex flex-wrap gap-2">
-			<button class="btn btn-success btn-outline" onclick={showOutline}> Outline Style </button>
-			<button class="btn btn-warning btn-dash" onclick={showDash}> Dash Style </button>
-			<button class="btn btn-info btn-soft" onclick={showSoft}> Soft Style </button>
+		<div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 md:gap-3">
+			<button class="btn btn-sm md:btn-md btn-success btn-outline" onclick={showOutline}> Outline Style </button>
+			<button class="btn btn-sm md:btn-md btn-warning btn-dash" onclick={showDash}> Dash Style </button>
+			<button class="btn btn-sm md:btn-md btn-info btn-soft" onclick={showSoft}> Soft Style </button>
 		</div>
 	</section>
 
 	<!-- Advanced Features -->
 	<section class="mb-12">
-		<h2 class="mb-4 text-2xl font-semibold">Advanced Features</h2>
+		<h2 class="mb-4 text-xl md:text-2xl font-semibold flex items-center gap-2">
+			<span class="w-8 h-8 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center text-sm">05</span>
+			Advanced Features
+		</h2>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 			<div>
@@ -288,7 +305,7 @@ toast.info('Soft style', { style: 'soft' });`}
   }
 });`}
 				/>
-				<button class="btn btn-primary mt-2" onclick={showWithButton}> Toast with Button </button>
+				<button class="btn btn-sm md:btn-md btn-primary mt-2" onclick={showWithButton}> Action Button </button>
 			</div>
 
 			<div>
@@ -298,7 +315,7 @@ toast.info('Soft style', { style: 'soft' });`}
   showCloseButton: true
 });`}
 				/>
-				<button class="btn btn-secondary mt-2" onclick={showWithClose}> Toast with Close Button </button>
+				<button class="btn btn-sm md:btn-md btn-secondary mt-2" onclick={showWithClose}> Close Button </button>
 			</div>
 
 			<div class="md:col-span-2">
@@ -308,7 +325,7 @@ toast.info('Soft style', { style: 'soft' });`}
   customClass: 'bg-primary/20 backdrop-blur-md text-primary'
 });`}
 				/>
-				<button class="btn btn-accent mt-2" onclick={showCustomStyled}> Toast with Custom Classes </button>
+				<button class="btn btn-sm md:btn-md btn-accent mt-2" onclick={showCustomStyled}> Custom Classes </button>
 			</div>
 		</div>
 	</section>
@@ -320,7 +337,7 @@ toast.info('Soft style', { style: 'soft' });`}
 		<!-- Toast Options -->
 		<div class="mb-8">
 			<h3 class="mb-3 text-xl font-medium">Toast Options</h3>
-			<div class="overflow-x-auto">
+			<div class="overflow-x-auto border border-base-300 rounded-lg max-w-full">
 				<table class="table table-zebra w-full">
 					<thead>
 						<tr>
@@ -387,7 +404,7 @@ toast.info('Soft style', { style: 'soft' });`}
 		<!-- Toaster Props -->
 		<div class="mb-8">
 			<h3 class="mb-3 text-xl font-medium">Toaster Component Props</h3>
-			<div class="overflow-x-auto">
+			<div class="overflow-x-auto border border-base-300 rounded-lg max-w-full">
 				<table class="table table-zebra w-full">
 					<thead>
 						<tr>
@@ -412,7 +429,7 @@ toast.info('Soft style', { style: 'soft' });`}
 		<!-- Toast Methods -->
 		<div class="mb-8">
 			<h3 class="mb-3 text-xl font-medium">Toast Methods</h3>
-			<div class="overflow-x-auto">
+			<div class="overflow-x-auto border border-base-300 rounded-lg max-w-full">
 				<table class="table table-zebra w-full">
 					<thead>
 						<tr>
@@ -457,8 +474,8 @@ toast.info('Soft style', { style: 'soft' });`}
 		<!-- Toast Controller Methods -->
 		<div class="mb-8">
 			<h3 class="mb-3 text-xl font-medium">Toast Controller Methods</h3>
-			<p class="text-base-content/70 mb-3">Methods available on the returned toast controller (e.g., from <code class="text-primary">toast.loading()</code>)</p>
-			<div class="overflow-x-auto">
+			<p class="text-base-content/70 mb-3 text-sm md:text-base">Methods available on the returned toast controller (e.g., from <code class="text-primary">toast.loading()</code>)</p>
+			<div class="overflow-x-auto border border-base-300 rounded-lg max-w-full">
 				<table class="table table-zebra w-full">
 					<thead>
 						<tr>

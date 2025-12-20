@@ -12,8 +12,7 @@ import { getContext, onDestroy, setContext } from 'svelte';
  * @typedef {{
  *  text?: string,
  *  class?: string,
- *  callback?: (toast: Toast) => void,
- *  closeOnClick?: boolean
+ *  callback?: (toast: Toast) => void
  * }} ToastButton
  */
 

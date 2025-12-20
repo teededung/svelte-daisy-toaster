@@ -1,6 +1,6 @@
 {
 	"name": "svelte-daisy-toaster",
-	"version": "0.7.1",
+	"version": "0.7.2",
 	"description": "Svelte DaisyUI Toast Component",
 	"keywords": [
 		"daisyui",
@@ -44,7 +44,7 @@
 		"prettier-plugin-svelte": "^3.4.1",
 		"prettier-plugin-tailwindcss": "^0.6.14",
 		"svelte": "^5.46.0",
-		"svelte-check": "^4.3.4",
+		"svelte-check": "^4.3.5",
 		"svelte-highlight": "^7.9.0",
 		"tailwindcss": "^4.1.18",
 		"typescript": "^5.9.3",
@@ -71,6 +71,5 @@
 			"default": "./dist/index.js"
 		}
 	},
-	"packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
-	"dependencies": {}
+	"packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c"
 }

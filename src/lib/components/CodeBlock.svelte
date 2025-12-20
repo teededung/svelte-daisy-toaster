@@ -13,9 +13,11 @@
 	}
 </script>
 
-<div class="relative group my-4">
-	<div class="mockup-code code-block-wrapper !pb-0 !pt-4 text-sm min-w-0 overflow-hidden">
-		<div class="overflow-x-auto custom-scrollbar px-6 pb-6"><Highlight language={typescript} {code} /></div>
+<div class="relative group my-4 w-full min-w-0">
+	<div class="mockup-code code-block-wrapper !pb-0 !pt-4 text-sm min-w-0 overflow-hidden w-full max-w-full">
+		<div class="overflow-x-auto custom-scrollbar px-6 pb-6 w-full max-w-full">
+			<Highlight language={typescript} {code} />
+		</div>
 	</div>
 	<button
 		class="btn btn-ghost btn-xs absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
