@@ -237,6 +237,7 @@
 						const button = toast.button;
 						if (button && button.callback) {
 							button.callback(toast);
+							return;
 						}
 						toastState.startRemoval(toast.id);
 					}}
