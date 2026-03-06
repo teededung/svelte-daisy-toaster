@@ -95,6 +95,51 @@
 	function showSoft() {
 		toast.info('Info with soft style', { style: 'soft' });
 	}
+
+	function createRandomLongMessage() {
+		const fragments = [
+			'synchronizing cached workspace preferences',
+			'reconciling optimistic updates from background tabs',
+			'verifying deferred upload manifests',
+			'refreshing permission snapshots for shared projects',
+			'processing notification batches from the local queue',
+			'merging stale draft metadata with the latest server response',
+			'checking retry markers for interrupted requests',
+			'normalizing component payloads before hydration',
+			'flushing analytics events captured during offline mode',
+			'comparing local timestamps against replicated state'
+		];
+
+		const count = 3 + Math.floor(Math.random() * 5);
+		const shuffled = [...fragments].sort(() => Math.random() - 0.5).slice(0, count);
+		const sentence = shuffled.join(', ');
+
+		return `Unexpected client state detected while ${sentence}. Review the latest activity log before retrying this action.`;
+	}
+
+	function showLongMessage() {
+		toast.info(createRandomLongMessage(), {
+			title: 'Long message demo',
+			maxWidth: 420
+		});
+	}
+
+	function showMultilineMessage() {
+		toast(
+			'Build summary\n- 12 files transformed\n- 3 assets optimized\n- 0 warnings detected',
+			{
+				title: 'Multiline demo',
+				maxWidth: 420
+			}
+		);
+	}
+
+	function showNarrowMaxWidthMessage() {
+		toast.info(createRandomLongMessage(), {
+			title: 'maxWidth demo',
+			maxWidth: 280
+		});
+	}
 </script>
 
 <svelte:head>
@@ -330,6 +375,43 @@ toast.info('Soft style', { style: 'soft' });`}
 		</div>
 	</section>
 
+	<!-- Message Layout -->
+	<section class="mb-12">
+		<h2 class="mb-4 text-xl md:text-2xl font-semibold flex items-center gap-2">
+			<span class="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center text-sm">06</span>
+			Message Layout
+		</h2>
+		<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+			<div class="rounded-xl border border-base-300 bg-base-200/50 p-4">
+				<h3 class="mb-2 font-medium">Long message</h3>
+				<p class="mb-3 text-sm text-base-content/70">
+					Generates a random long message each time to show wrapping inside the toast width limit.
+				</p>
+				<button class="btn btn-sm md:btn-md btn-info" onclick={showLongMessage}>
+					Show long message
+				</button>
+			</div>
+			<div class="rounded-xl border border-base-300 bg-base-200/50 p-4">
+				<h3 class="mb-2 font-medium">Multiline message</h3>
+				<p class="mb-3 text-sm text-base-content/70">
+					Shows newline rendering with <code>\n</code>.
+				</p>
+				<button class="btn btn-sm md:btn-md btn-primary" onclick={showMultilineMessage}>
+					Show multiline
+				</button>
+			</div>
+			<div class="rounded-xl border border-base-300 bg-base-200/50 p-4">
+				<h3 class="mb-2 font-medium">Custom maxWidth</h3>
+				<p class="mb-3 text-sm text-base-content/70">
+					Shows a narrower toast by setting <code>maxWidth: 280</code>.
+				</p>
+				<button class="btn btn-sm md:btn-md btn-secondary" onclick={showNarrowMaxWidthMessage}>
+					Show maxWidth demo
+				</button>
+			</div>
+		</div>
+	</section>
+
 	<!-- Options / API Reference -->
 	<section class="mb-12">
 		<h2 class="mb-4 text-2xl font-semibold">Options / API Reference</h2>
@@ -352,7 +434,7 @@ toast.info('Soft style', { style: 'soft' });`}
 							<td><code class="text-primary">message</code></td>
 							<td><code>string</code></td>
 							<td><code>undefined</code></td>
-							<td>Toast message content</td>
+							<td>Toast message content. Supports multiline text with <code>\n</code>.</td>
 						</tr>
 						<tr>
 							<td><code class="text-primary">title</code></td>
@@ -383,6 +465,18 @@ toast.info('Soft style', { style: 'soft' });`}
 							<td><code>boolean</code></td>
 							<td><code>false</code></td>
 							<td>Show close button on the toast</td>
+						</tr>
+						<tr>
+							<td><code class="text-primary">minWidth</code></td>
+							<td><code>number</code></td>
+							<td><code>250</code></td>
+							<td>Minimum toast width in pixels. Inherits from the Toaster by default.</td>
+						</tr>
+						<tr>
+							<td><code class="text-primary">maxWidth</code></td>
+							<td><code>number</code></td>
+							<td><code>420</code></td>
+							<td>Maximum toast width in pixels. Inherits from the Toaster by default.</td>
 						</tr>
 						<tr>
 							<td><code class="text-primary">customClass</code></td>
@@ -420,6 +514,18 @@ toast.info('Soft style', { style: 'soft' });`}
 							<td><code>boolean</code></td>
 							<td><code>false</code></td>
 							<td>Enable stacked toast display mode</td>
+						</tr>
+						<tr>
+							<td><code class="text-primary">minWidth</code></td>
+							<td><code>number</code></td>
+							<td><code>250</code></td>
+							<td>Default minimum width for all toasts in pixels</td>
+						</tr>
+						<tr>
+							<td><code class="text-primary">maxWidth</code></td>
+							<td><code>number</code></td>
+							<td><code>420</code></td>
+							<td>Default maximum width for all toasts in pixels</td>
 						</tr>
 					</tbody>
 				</table>

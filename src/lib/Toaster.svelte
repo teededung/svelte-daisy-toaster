@@ -7,12 +7,14 @@
 		zIndex = 50,
 		stack = false,
 		gap = 14,
-		minWidth = 250
+		minWidth = 250,
+		maxWidth = 420
 	} = $props<{
 		zIndex?: number;
 		stack?: boolean;
 		gap?: number;
 		minWidth?: number;
+		maxWidth?: number;
 	}>();
 
 	const toastState = getToastState() as ToastState;
@@ -88,14 +90,12 @@
 		}, {})
 	);
 
-	const maxWidths = $derived(
-		Object.entries(groupedToasts).reduce<Record<string, number>>((acc, [pos, grp]) => {
-			acc[pos] = Math.max(0, ...grp.map((t) => toastState.widths[t.id] || 0));
-			return acc;
-		}, {})
-	);
-
-	function getToastStackStyle(index: number, group: ToastType[], position: string, isVisible: boolean) {
+	function getToastStackStyle(
+		index: number,
+		group: ToastType[],
+		position: string,
+		isVisible: boolean
+	) {
 		if (!stack) return '';
 
 		const isExpanded = hoveredPositions[position];
@@ -104,9 +104,10 @@
 		const transformOrigin = isBottom ? 'bottom' : 'top';
 
 		if (!isExpanded) {
-			const gapPx = gap;
+			const shellReveal = Math.max(gap, 16);
+			const gapPx = index === 0 ? 0 : shellReveal;
 			const y = index * gapPx * sign;
-			const scale = 1 - index * 0.05;
+			const scale = 1 - index * 0.035;
 			const opacity = index > 2 ? 0 : 1;
 			return `
 				transform: translateY(${y}px) scale(${scale});
@@ -155,41 +156,55 @@
 </script>
 
 {#each Object.entries(groupedToasts) as [position, group] (position)}
-	{@const groupMinWidth = Math.max(minWidth, maxWidths[position] || 0)}
 	<div
 		class="toast {position}"
 		class:toast-stacked={stack}
-		style={`z-index: ${zIndex}; --toast-min-width: ${groupMinWidth}px;`}
+		style={`z-index: ${zIndex}; --toast-min-width: ${minWidth}px; --toast-max-width: ${maxWidth}px;`}
 		role="region"
 		aria-label="Notifications"
 	>
 		{#if stack}
 			{@const reversedGroup = group.toReversed()}
 			{@const visibleGroup = reversedGroup.filter((t) => t.visible)}
+			{@const isExpanded = hoveredPositions[position]}
+			{@const topVisibleToast = visibleGroup[0]}
+			{@const stackWidth = topVisibleToast
+				? (toastState.widths[topVisibleToast.id] ?? topVisibleToast.minWidth ?? minWidth)
+				: Math.max(...reversedGroup.map((t) => toastState.widths[t.id] || t.minWidth || minWidth), minWidth)}
+			{@const stackHeight = topVisibleToast
+				? (toastState.heights[topVisibleToast.id] ?? 0)
+				: Math.max(...reversedGroup.map((t) => toastState.heights[t.id] || 0), 0)}
 			{#each reversedGroup as toast (toast.id)}
 				{@const index = toast.visible ? visibleGroup.indexOf(toast) : reversedGroup.indexOf(toast)}
+				{@const shellOnly = !isExpanded && index > 0}
 				<div
-					style={getToastStackStyle(index, reversedGroup, position, toast.visible)}
+					style={`--stack-item-width: ${stackWidth}px; ${getToastStackStyle(index, reversedGroup, position, toast.visible)}`}
 					onmouseenter={() => handleMouseEnter(position)}
 					onmouseleave={() => handleMouseLeave(position)}
 					role="presentation"
 				>
-					<Toast {toast} position={toast.position} isAnimate={!stack} isBlur={stack && group.length >= 2} />
+					<Toast
+						{toast}
+						position={toast.position}
+						isAnimate={!stack}
+						isBlur={stack && group.length >= 2}
+						defaultMinWidth={minWidth}
+						defaultMaxWidth={maxWidth}
+						forcedWidth={shellOnly ? stackWidth : undefined}
+						forcedHeight={shellOnly ? stackHeight : undefined}
+						{shellOnly}
+					/>
 				</div>
 			{/each}
 		{:else}
 			{#each group as toast (toast.id)}
-				<Toast {toast} position={toast.position} />
+				<Toast {toast} position={toast.position} defaultMinWidth={minWidth} defaultMaxWidth={maxWidth} />
 			{/each}
 		{/if}
 	</div>
 {/each}
 
 <style>
-	.toast :global(.alert) {
-		min-width: var(--toast-min-width, 250px);
-	}
-
 	.toast-stacked {
 		display: grid !important;
 		align-items: end;
@@ -206,7 +221,7 @@
 		display: flex;
 		flex-direction: column;
 		width: max-content;
-		min-width: 100%;
+		max-width: min(var(--toast-max-width, 420px), calc(100vw - 1rem));
 	}
 
 	.toast-stacked > div > :global(.alert) {

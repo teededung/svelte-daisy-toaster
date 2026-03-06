@@ -18,6 +18,8 @@ export type ToastOptions = {
 	button?: ToastButton;
 	showCloseButton?: boolean;
 	customClass?: string;
+	minWidth?: number;
+	maxWidth?: number;
 };
 
 export class ToastState {
@@ -73,6 +75,8 @@ export type Toast = {
 	button?: ToastButton;
 	showCloseButton?: boolean;
 	customClass?: string;
+	minWidth?: number;
+	maxWidth?: number;
 	visible: boolean;
 	/** Back‑reference to the owning `ToastState` instance. */
 	_toastState: ToastState;

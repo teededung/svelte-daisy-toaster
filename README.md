@@ -7,8 +7,10 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 - Easy to use toast notifications
 - Supports info, success, warning, and error types
 - Optional title for structured alerts
+- Multiline messages with `\n`
 - First-class TypeScript typings and autocomplete
 - Customizable duration
+- Global and per-toast width controls
 - Animated icons and transitions
 - Built with Svelte 5 runes
 - Styled with DaisyUI and Tailwind CSS
@@ -142,11 +144,15 @@ Anywhere in your components:
   - `durationMs`: number in ms (default: 5000)
   - `style`: 'outline' | 'dash' | 'soft' (optional)
   - `position`: shorthand like `bottom-center`, `top-right`, `middle-left` **or** full DaisyUI classes (`toast-bottom toast-center`). Default is `top-right`. Supports flexible order like `center-bottom` or `bottom-center`.
+  - `minWidth`: number in px (default: inherits `<Toaster minWidth>`, which defaults to `250`)
+  - `maxWidth`: number in px (default: inherits `<Toaster maxWidth>`, which defaults to `420`)
   - `showCloseButton`: boolean (default: false) - If true, shows a close button in the corner of the toast
   - `button`: object (optional) - Custom action button with:
     - `text`: string (default: 'OK') - Button text
     - `class`: string (optional) - Additional CSS classes for the button (e.g., 'btn-primary')
     - `callback`: function (optional) - Function called when button is clicked, receives toast object
+
+`message` now respects newline characters, so `"Line 1\nLine 2"` renders on two lines.
 
 **String format (default style):**
 
@@ -174,6 +180,8 @@ Shortcuts (flexible signatures):
   - `stack`: boolean (default: false) - Enable `sonner`-like stacking effect. Toasts will stack with depth and expand on hover.
   - `gap`: number (default: 14) - The gap between toasts when stacked (collapsed).
   - `zIndex`: number (default: 50) - The z-index of the toaster container.
+  - `minWidth`: number in px (default: 250) - Default minimum width for all toasts.
+  - `maxWidth`: number in px (default: 420) - Default maximum width for all toasts.
 - `<Toast toast={{id, type, message, title?}} isAnimate={true} />`: Individual toast (usually not needed directly). The `isAnimate` prop (default: true) controls whether the icon animation is enabled.
 
 ### State Management
@@ -237,6 +245,23 @@ Default style toast (default color, just `alert` class):
 
 ```svelte
 toast('Simple notification message');
+```
+
+### Multiline and Width Control
+
+Use newline characters for multiline content and set toast-level width overrides when needed:
+
+```ts
+toast.info('Line 1\nLine 2\nLine 3', {
+	title: 'Multiline demo',
+	maxWidth: 320
+});
+
+toast.info('A longer message that should wrap earlier than the default width.', {
+	title: 'Width demo',
+	minWidth: 250,
+	maxWidth: 280
+});
 ```
 
 ### Stacked Toasts

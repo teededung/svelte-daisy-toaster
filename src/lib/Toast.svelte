@@ -7,17 +7,32 @@
 		toast,
 		isAnimate = true,
 		position = 'top-right',
-		isBlur = false
+		isBlur = false,
+		defaultMinWidth = 250,
+		defaultMaxWidth = 420,
+		forcedWidth,
+		forcedHeight,
+		shellOnly = false
 	} = $props<{
 		toast: ToastType;
 		isAnimate?: boolean;
 		position?: string;
 		isBlur?: boolean;
+		defaultMinWidth?: number;
+		defaultMaxWidth?: number;
+		forcedWidth?: number;
+		forcedHeight?: number;
+		shellOnly?: boolean;
 	}>();
 
 	const toastState = getToastState() as ToastState;
 	let alertRef = $state<HTMLDivElement | null>(null);
 	let isAnimated = $state(false);
+	const minWidth = $derived(toast.minWidth ?? defaultMinWidth);
+	const maxWidth = $derived(toast.maxWidth ?? defaultMaxWidth);
+	const toastWidthStyle = $derived(
+		`${forcedWidth ? `width: min(${forcedWidth}px, calc(100vw - 1rem)); min-width: min(${forcedWidth}px, calc(100vw - 1rem)); max-width: min(${forcedWidth}px, calc(100vw - 1rem));` : `--toast-min-width: ${minWidth}px; --toast-max-width: ${maxWidth}px;`}${forcedHeight ? ` height: ${forcedHeight}px; min-height: ${forcedHeight}px; max-height: ${forcedHeight}px;` : ''}`
+	);
 
 	$effect(() => {
 		if (isAnimate) {
@@ -100,10 +115,14 @@
 		class:alert-dash={toast.style === 'dash'}
 		class:alert-soft={toast.style === 'soft'}
 		class:alert-blur={isBlur && (toast.style === 'outline' || toast.style === 'dash')}
-		role="alert"
+		style={toastWidthStyle}
+		role={shellOnly ? 'presentation' : 'alert'}
 		onmouseenter={() => toastState.pause(toast.id)}
 		onmouseleave={() => toastState.resume(toast.id)}
 	>
+		{#if shellOnly}
+			<span class="sr-only">Stacked toast preview</span>
+		{:else}
 		{#if toast.showCloseButton}
 			<button
 				class="absolute flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-1 border-white bg-black text-white transition-all duration-300 btn-outline hover:bg-white hover:text-black"
@@ -140,7 +159,7 @@
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
-				class="text-info"
+				class="text-info shrink-0"
 				class:animate-icon={isAnimated}
 			>
 				<circle cx="12" cy="12" r="10" />
@@ -160,6 +179,7 @@
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
+				class="shrink-0"
 				class:animate-icon={isAnimated}
 			>
 				<circle cx="12" cy="12" r="10" />
@@ -169,7 +189,7 @@
 				</g>
 			</svg>
 		{:else if toast.type === 'loading'}
-			<span class="loading loading-xs loading-spinner" aria-live="polite" aria-busy="true"></span>
+			<span class="loading loading-xs loading-spinner shrink-0" aria-live="polite" aria-busy="true"></span>
 		{:else if toast.type === 'success'}
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -181,7 +201,7 @@
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
-				class="check-icon"
+				class="check-icon shrink-0"
 				class:animate={isAnimated}
 			>
 				<path d="M4 12l5 5L20 6" class="check-path" />
@@ -197,6 +217,7 @@
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
+				class="shrink-0"
 				class:animate-icon={isAnimated}
 			>
 				<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
@@ -214,7 +235,7 @@
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
-				class="x-icon"
+				class="x-icon shrink-0"
 				class:animate={isAnimated}
 			>
 				<path d="M18 6 6 18" class="diagonal-1" />
@@ -222,12 +243,12 @@
 			</svg>
 		{/if}
 		{#if toast.title}
-			<div>
+			<div class="min-w-0 flex-1">
 				<h3 class="font-bold">{toast.title}</h3>
-				<div class="text-xs">{toast.message}</div>
+				<div class="text-xs whitespace-pre-line break-words">{toast.message}</div>
 			</div>
 		{:else}
-			<span>{toast.message}</span>
+			<span class="min-w-0 flex-1 whitespace-pre-line break-words">{toast.message}</span>
 		{/if}
 		{#if toast.button}
 			<div class="ml-auto">
@@ -246,10 +267,16 @@
 				</button>
 			</div>
 		{/if}
+		{/if}
 	</div>
 {/if}
 
 <style>
+	.alert {
+		min-width: var(--toast-min-width, 250px);
+		max-width: min(var(--toast-max-width, 420px), calc(100vw - 1rem));
+	}
+
 	.animate-icon {
 		animation: primaryAnimation 0.5s ease-in-out;
 	}
