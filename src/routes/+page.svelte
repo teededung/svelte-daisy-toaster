@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { toast } from '$lib/index.js';
+	import { toast } from '$lib';
 	import { toasterConfig } from './config.svelte.js';
-	import CodeBlock from '$lib/components/CodeBlock.svelte';
-	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
+	import CodeBlock from './_components/CodeBlock.svelte';
+	import ThemeSwitcher from './_components/ThemeSwitcher.svelte';
 
 	function showDefault() {
 		toast('This is a default toast notification');

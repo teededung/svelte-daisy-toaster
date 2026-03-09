@@ -93,6 +93,22 @@ Or with pnpm:
 pnpm add svelte-daisy-toaster
 ```
 
+Consumers should also have these peer dependencies installed:
+
+```bash
+pnpm add -D tailwindcss@^4.1 daisyui@^5
+```
+
+## Consumer Setup
+
+### What consumers must configure
+
+1. Install `svelte-daisy-toaster`, `tailwindcss`, and `daisyui`
+2. Add DaisyUI to your Tailwind v4 stylesheet
+3. Add an `@source` entry for `svelte-daisy-toaster/dist`
+4. Mount `<Toaster />` once near the root of your app
+5. Call `setToastState()` before using `toast(...)`
+
 ## Usage
 
 ### Setup
@@ -392,6 +408,25 @@ toast.info('Direct DaisyUI', 3000, 'toast-middle toast-start');
 The toasts use DaisyUI's `alert` classes. Customize via Tailwind config or override styles.
 
 Position: Default top-end. Modify in Toaster.svelte if needed.
+
+## Library Development and Release
+
+For maintainers, the package artifact is the source of truth. Validate and publish from `dist`, not from the demo app build.
+
+```bash
+pnpm check
+pnpm package
+```
+
+Release helpers:
+
+```bash
+pnpm publish:patch
+pnpm publish:minor
+pnpm publish:major
+```
+
+The demo/docs app lives under `src/routes`, while the published library surface lives under `src/lib`.
 
 ## License
 

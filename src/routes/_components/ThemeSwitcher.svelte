@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { BROWSER as browser } from 'esm-env';
 
 	let theme = $state<'light' | 'dark'>(getInitialTheme());
 

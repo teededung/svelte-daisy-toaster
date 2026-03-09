@@ -1,6 +1,6 @@
 {
 	"name": "svelte-daisy-toaster",
-	"version": "0.7.4",
+	"version": "0.7.5",
 	"description": "Svelte DaisyUI Toast Component",
 	"keywords": [
 		"daisyui",
@@ -20,11 +20,11 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"package": "svelte-kit sync && svelte-package",
-		"prepublishOnly": "pnpm package",
-		"publish": "pnpm npm publish",
-		"publish:patch": "pnpm version patch && pnpm build && pnpm npm publish",
-		"publish:minor": "pnpm version minor && pnpm build && pnpm npm publish",
-		"publish:major": "pnpm version major && pnpm build && pnpm npm publish"
+		"prepublishOnly": "pnpm check && pnpm package",
+		"publish": "pnpm check && pnpm package && pnpm npm publish",
+		"publish:patch": "pnpm version patch && pnpm check && pnpm package && pnpm npm publish",
+		"publish:minor": "pnpm version minor && pnpm check && pnpm package && pnpm npm publish",
+		"publish:major": "pnpm version major && pnpm check && pnpm package && pnpm npm publish"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.1",
@@ -38,6 +38,7 @@
 		"eslint": "^9.39.3",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.15.0",
+		"esm-env": "^1.2.2",
 		"globals": "^16.5.0",
 		"highlight.js": "^11.11.1",
 		"prettier": "^3.8.1",
