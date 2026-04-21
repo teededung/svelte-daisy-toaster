@@ -5,6 +5,14 @@ import { defineConfig } from 'vite';
 
 const external = [/^svelte(\/|$)/, 'esm-env'];
 
+function isUnusedTransitionWarning(warning) {
+	return (
+		warning.code === 'UNUSED_EXTERNAL_IMPORT' &&
+		warning.exporter === 'svelte/transition' &&
+		warning.names?.includes('fly')
+	);
+}
+
 export default defineConfig({
 	plugins: [svelte()],
 	build: {
@@ -13,6 +21,10 @@ export default defineConfig({
 		emptyOutDir: false,
 		rollupOptions: {
 			external,
+			onwarn(warning, warn) {
+				if (isUnusedTransitionWarning(warning)) return;
+				warn(warning);
+			},
 			output: {
 				format: 'es',
 				entryFileNames: 'index.js',
