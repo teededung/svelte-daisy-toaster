@@ -18,9 +18,9 @@ A simple toast notification library for Svelte 5 applications using DaisyUI styl
 
 ## Requirements
 
-- Svelte ^5.0.0 (peer dependency)
-- DaisyUI ^5.0.0 or later (for styling)
-- Tailwind CSS ^4.0.0 or later
+- Svelte ^5.36.0 (peer dependency)
+- DaisyUI ^5.1.0 or later (for styling)
+- Tailwind CSS ^4.1.0 or later
 
 ## Peer Dependencies
 
@@ -107,7 +107,9 @@ pnpm add -D tailwindcss@^4.1 daisyui@^5
 2. Add DaisyUI to your Tailwind v4 stylesheet
 3. Add an `@source` entry for `svelte-daisy-toaster/dist`
 4. Mount `<Toaster />` once near the root of your app
-5. Call `setToastState()` before using `toast(...)`
+5. Call `setToastState()` during component initialization before using `toast(...)`
+
+For SvelteKit SSR consumers, `svelte-daisy-toaster` exports the Svelte package entry directly. You should not need to add this package to `ssr.noExternal`; keep the normal setup above and let your bundler handle the `.svelte` files.
 
 ## Usage
 
@@ -188,7 +190,7 @@ Shortcuts (flexible signatures):
 - `toast.error(message, durationMs?, position?, style?, title?)`
 - `toast.error(message, options?)`
 - `toast.error(options)`
-- `toast.loading(message, options?)` → returns controller with `{ id, success, error, info, warning, update, dismiss }`
+- `toast.loading(message, options?)` → returns `Toast | undefined`; after initialization it returns a toast controller with `{ id, success, error, info, warning, update, dismiss }`
 
 ### Components
 
@@ -216,8 +218,8 @@ The library ships with rich `.d.ts` typings so you get autocomplete and strict c
   - `ToastButton`: `{ text?: string; class?: string; callback?: (toast) => void; }`
   - `ToastOptions`: full options object for `toast(...)`
 - **State & helpers**:
-  - `ToastState` class with `add`, `update`, `startRemoval`, `remove`
-  - `toast.loading(...)` returns a typed controller with `success`, `error`, `info`, `warning`, `update`, `dismiss`
+  - `ToastState` class with `add`, `update`, `startRemoval`, `remove`, `pause`, `resume`
+  - `toast.loading(...)` returns a typed `Toast | undefined`; when initialized, the returned toast includes `success`, `error`, `info`, `warning`, `update`, `dismiss`
 - **Overloads**:
   - `toast` and `toast.info/success/warning/error` are overloaded to support both legacy positional params and the object format, with proper TypeScript signatures.
 
@@ -233,6 +235,8 @@ Show a persistent loading toast and then resolve it to success (or error):
 
 	async function runTask() {
 		const t = toast.loading('Uploading file...'); // persistent (no auto-dismiss)
+		if (!t) return;
+
 		try {
 			await new Promise((r) => setTimeout(r, 1500));
 			t.success('Upload complete', { durationMs: 2000, title: 'Success' });
@@ -250,9 +254,9 @@ You can also update or dismiss manually:
 ```js
 const t = toast.loading('Processing...', { position: 'bottom-center' });
 // later
-t.update({ message: 'Almost done...' });
+t?.update({ message: 'Almost done...' });
 // or
-t.dismiss();
+t?.dismiss();
 ```
 
 ### Basic Usage
@@ -392,22 +396,33 @@ The library supports 9 different positions in a 3x3 grid layout. You can use sho
 **Position examples:**
 
 ```svelte
-// Top positions toast.info('Top left notification', 3000, 'top-left'); toast.success('Top center
-notification', 3000, 'top-center'); toast.warning('Top right notification', 3000, 'top-right'); //
-Middle positions toast.info('Left side notification', 3000, 'middle-left'); toast.success('Center
-notification', 3000, 'center-middle'); toast.warning('Right side notification', 3000,
-'right-middle'); // Bottom positions toast.error('Bottom left', 3000, 'bottom-left');
-toast.success('Bottom center', 3000, 'bottom-center'); toast.info('Bottom right', 3000,
-'bottom-right'); // Flexible order - both work the same toast.error('Bottom center', 3000,
-'center-bottom'); // Same as 'bottom-center' // You can also use DaisyUI classes directly
+// Top positions
+toast.info('Top left notification', 3000, 'top-left');
+toast.success('Top center notification', 3000, 'top-center');
+toast.warning('Top right notification', 3000, 'top-right');
+
+// Middle positions
+toast.info('Left side notification', 3000, 'middle-left');
+toast.success('Center notification', 3000, 'center-middle');
+toast.warning('Right side notification', 3000, 'right-middle');
+
+// Bottom positions
+toast.error('Bottom left', 3000, 'bottom-left');
+toast.success('Bottom center', 3000, 'bottom-center');
+toast.info('Bottom right', 3000, 'bottom-right');
+
+// Flexible order - both work the same
+toast.error('Bottom center', 3000, 'center-bottom'); // Same as 'bottom-center'
+
+// You can also use DaisyUI classes directly
 toast.info('Direct DaisyUI', 3000, 'toast-middle toast-start');
 ```
 
 ## Customization
 
-The toasts use DaisyUI's `alert` classes. Customize via Tailwind config or override styles.
+The toasts use DaisyUI's `alert` classes. Customize via Tailwind config, the `customClass` toast option, or local CSS overrides.
 
-Position: Default top-end. Modify in Toaster.svelte if needed.
+Position defaults to `top-right`, which resolves to DaisyUI's `toast-top toast-end` classes. Pass the `position` option on individual toasts to change placement.
 
 ## Library Development and Release
 
